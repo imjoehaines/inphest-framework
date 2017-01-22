@@ -1,0 +1,16 @@
+language: php
+
+php:
+  - 7.1
+  - nightly
+
+matrix:
+  fast_finish: true
+  allow_failures:
+    - php: nightly
+
+install:
+  - composer install
+
+script:
+  - vendor/bin/phpunit tests/
