@@ -12,14 +12,9 @@ if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
 use Symfony\Component\Console\Application;
 
 use Inphest\Framework\Console\RunCommand;
-use Inphest\Framework\Factory\TestFileIteratorFactory;
 
 $application = new Application('Inphest');
 
-$application->add(
-    new RunCommand(
-        new TestFileIteratorFactory()
-    )
-);
+$application->add(new RunCommand());
 
 $application->run();
