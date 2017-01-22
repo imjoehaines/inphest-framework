@@ -86,6 +86,7 @@ final class TestFileFilterIteratorTest extends TestCase
     public function validFilenameProvider() : array
     {
         return [
+            ['Test.php'],
             ['aTest.php'],
             ['SomeTest.php'],
             ['AReallyReallyReallyReallyReallyReallyReallyLongTest.php'],
