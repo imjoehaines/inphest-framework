@@ -1,0 +1,30 @@
+#!/usr/bin/env php
+<?php
+
+if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    require_once __DIR__ . '/../vendor/autoload.php';
+} elseif (file_exists(__DIR__ . '/../../../autoload.php')) {
+    require_once __DIR__ . '/../../../autoload.php';
+} else {
+    die('Could not find `vendor/autoload.php`. You probably need to run `composer install`.');
+}
+
+use Symfony\Component\Console\Application;
+
+use Inphest\Framework\Console\RunCommand;
+use Inphest\Framework\NamespaceExtractor;
+use Inphest\Framework\Factory\TestCaseFactory;
+use Inphest\Framework\Factory\TestFileIteratorFactory;
+
+$application = new Application('Inphest');
+
+$application->add(
+    new RunCommand(
+        new TestFileIteratorFactory(),
+        new TestCaseFactory(
+            new NamespaceExtractor()
+        )
+    )
+);
+
+$application->run();
