@@ -2,7 +2,7 @@
 
 namespace Inphest\Framework;
 
-interface TestCase
+interface TestCaseInterface
 {
     public function getName() : string;
 
