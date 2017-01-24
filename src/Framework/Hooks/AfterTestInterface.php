@@ -1,6 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Inphest\Framework;
+namespace Inphest\Framework\Hooks;
+
+use Inphest\Framework\TestCase;
 
 interface AfterTestInterface
 {

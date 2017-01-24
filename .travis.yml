@@ -13,4 +13,4 @@ install:
   - composer install
 
 script:
-  - exit 0 || vendor/bin/phpunit tests/
+  - vendor/bin/phpunit tests/

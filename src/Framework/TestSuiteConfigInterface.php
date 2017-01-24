@@ -5,7 +5,7 @@ namespace Inphest\Framework;
 interface TestSuiteConfigInterface
 {
     /**
-     * @return iterable a list of all tests in this suite
+     * @return iterable a list of all test cases in this suite
      */
-    public function getTests() : iterable;
+    public function getTestCases() : iterable;
 }
