@@ -8,7 +8,7 @@ interface TestCaseInterface
 {
     public function getName() : string;
 
-    public function getTests() : iterable;
+    public function getTestMethods() : iterable;
 
     public function runTest(string $testName) : TestResultInterface;
 }

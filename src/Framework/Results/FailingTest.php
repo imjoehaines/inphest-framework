@@ -14,7 +14,7 @@ final class FailingTest implements TestResultInterface
 
     public function getOutput() : string
     {
-        return '✘ ' . $this->name . PHP_EOL . $this->failure->getMessage();
+        return '✘ ' . $this->name;
     }
 
     public function isFailure() : bool
