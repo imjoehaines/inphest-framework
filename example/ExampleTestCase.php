@@ -7,7 +7,7 @@ use Inphest\Framework\Hooks\AfterTestInterface;
 use Inphest\Assertions\AssertionException;
 use Inphest\Framework\Hooks\HasHooksInterface;
 
-class ExampleTestCase implements HasHooksInterface//, AfterTestInterface
+class ExampleTestCase implements HasHooksInterface //, AfterTestInterface
 {
     public function testTheThing()
     {
