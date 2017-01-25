@@ -3,11 +3,12 @@
 namespace Example;
 
 use Inphest\Framework\Hooks\AfterTest;
-use Inphest\Framework\Hooks\AfterTestInterface;
 use Inphest\Assertions\AssertionException;
 use Inphest\Framework\Hooks\HasHooksInterface;
+use Inphest\Framework\Hooks\AfterTestInterface;
+use Inphest\Framework\Results\TestResultInterface;
 
-class ExampleTestCase implements HasHooksInterface //, AfterTestInterface
+class ExampleTestCase implements HasHooksInterface, AfterTestInterface
 {
     public function testTheThing()
     {
@@ -31,7 +32,7 @@ class ExampleTestCase implements HasHooksInterface //, AfterTestInterface
         ];
     }
 
-    public function afterTest()
+    public function afterTest(TestResultInterface $result) : void
     {
         echo PHP_EOL .  '!!!After Test'. PHP_EOL;
     }

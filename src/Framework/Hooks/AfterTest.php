@@ -3,11 +3,12 @@
 namespace Inphest\Framework\Hooks;
 
 use Inphest\Framework\TestCaseInterface;
+use Inphest\Framework\Hooks\AfterTestInterface;
 use Inphest\Framework\Results\TestResultInterface;
 
 class AfterTest implements TestCaseInterface
 {
-    public function __construct(TestCaseInterface $testCase, $instance)
+    public function __construct(TestCaseInterface $testCase, AfterTestInterface $instance)
     {
         $this->testCase = $testCase;
         $this->instance = $instance;
