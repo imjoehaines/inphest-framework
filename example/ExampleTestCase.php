@@ -3,23 +3,28 @@
 namespace Example;
 
 use Inphest\Framework\Hooks\AfterTest;
+use Inphest\Framework\Hooks\BeforeTest;
 use Inphest\Assertions\AssertionException;
 use Inphest\Framework\Hooks\HasHooksInterface;
 use Inphest\Framework\Hooks\AfterTestInterface;
+use Inphest\Framework\Hooks\BeforeTestInterface;
 use Inphest\Framework\Results\TestResultInterface;
 
-class ExampleTestCase implements HasHooksInterface, AfterTestInterface
+class ExampleTestCase implements HasHooksInterface, AfterTestInterface, BeforeTestInterface
 {
     public function testTheThing()
     {
         throw new AssertionException('Error Processing Request');
     }
+
     public function testTheThing4()
     {
     }
+
     public function testTheThing3()
     {
     }
+
     public function testTheThing2()
     {
         throw new AssertionException('Error Processing Request');
@@ -29,11 +34,17 @@ class ExampleTestCase implements HasHooksInterface, AfterTestInterface
     {
         return [
             AfterTest::class,
+            BeforeTest::class,
         ];
     }
 
     public function afterTest(TestResultInterface $result) : void
     {
         echo PHP_EOL .  '!!!After Test'. PHP_EOL;
+    }
+
+    public function beforeTest() : void
+    {
+        echo PHP_EOL .  '!!!Before Test'. PHP_EOL;
     }
 }

@@ -3,16 +3,16 @@
 namespace Inphest\Framework\Hooks;
 
 use Inphest\Framework\TestCaseInterface;
-use Inphest\Framework\Hooks\AfterTestInterface;
+use Inphest\Framework\Hooks\BeforeTestInterface;
 use Inphest\Framework\Results\TestResultInterface;
 
-class AfterTest implements TestCaseInterface
+class BeforeTest implements TestCaseInterface
 {
     /**
      * @param TestCaseInterface $testCase
-     * @param AfterTestInterface $instance
+     * @param BeforeTestInterface $instance
      */
-    public function __construct(TestCaseInterface $testCase, AfterTestInterface $instance)
+    public function __construct(TestCaseInterface $testCase, BeforeTestInterface $instance)
     {
         $this->testCase = $testCase;
         $this->instance = $instance;
@@ -35,17 +35,15 @@ class AfterTest implements TestCaseInterface
     }
 
     /**
-     * Run a test and the after hook
+     * Run the before hook and a test
      *
      * @param string $testName
      * @return TestResultInterface
      */
     public function runTest(string $testName) : TestResultInterface
     {
-        $result = $this->testCase->runTest($testName);
+        $this->instance->beforeTest();
 
-        $this->instance->afterTest($result);
-
-        return $result;
+        return $this->testCase->runTest($testName);
     }
 }
