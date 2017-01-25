@@ -10,9 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 use Inphest\Framework\Factory\TestCaseFactory;
 use Inphest\Framework\TestSuiteConfigInterface;
-use Inphest\Framework\Hooks\AfterTestInterface;
 use Inphest\Framework\Hooks\AfterSuiteInterface;
-use Inphest\Framework\Hooks\BeforeTestInterface;
 use Inphest\Framework\Hooks\BeforeSuiteInterface;
 
 final class RunCommand extends Command

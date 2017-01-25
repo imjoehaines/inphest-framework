@@ -6,8 +6,6 @@ use ReflectionClass;
 use ReflectionMethod;
 
 use Inphest\Framework\TestCase;
-use Inphest\Framework\Hooks\AfterTestInterface;
-use Inphest\Framework\Hooks\BeforeTestInterface;
 
 final class TestCaseFactory
 {
@@ -23,8 +21,14 @@ final class TestCaseFactory
 
         $testCase = new TestCase($instance, $testMethods);
 
-        if ($instance instanceof AfterTestInterface) {
-            $testCase = new AfterHookTestCase($testCase);
+        // TODO make this not an awful name
+        // wrap the test case in all of its requested hooks
+        if ($instance instanceof TestCaseWithHooksInterface) {
+            $hooks = $instance->getHooks();
+
+            foreach ($hooks as $hook) {
+                $instance = new $hook($instance);
+            }
         }
 
         return $testCase;
