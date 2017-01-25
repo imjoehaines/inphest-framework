@@ -16,13 +16,12 @@ final class TestCaseFactory
         $instance = new $fullyQualifiedClassname;
 
         $reflectionClass = new ReflectionClass($instance);
-        $name = $reflectionClass->getShortName();
 
         $testMethods = array_map(function (ReflectionMethod $method) {
             return $method->name;
         }, $reflectionClass->getMethods(ReflectionMethod::IS_PUBLIC));
 
-        $testCase = new TestCase($name, $instance, $testMethods);
+        $testCase = new TestCase($instance, $testMethods);
 
         if ($instance instanceof AfterTestInterface) {
             $testCase = new AfterHookTestCase($testCase);

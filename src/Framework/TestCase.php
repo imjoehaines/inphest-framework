@@ -17,20 +17,18 @@ final class TestCase
     private $instance;
 
     /**
-     * @param string $name
      * @param mixed $instance
      * @param array $testMethods
      */
-    public function __construct(string $name, $instance, array $testMethods)
+    public function __construct($instance, array $testMethods)
     {
-        $this->name = $name;
         $this->instance = $instance;
         $this->testMethods = $testMethods;
     }
 
     public function getName() : string
     {
-        return $this->name;
+        return get_class($this->instance);
     }
 
     public function getTestMethods() : iterable

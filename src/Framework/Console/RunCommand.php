@@ -58,6 +58,7 @@ final class RunCommand extends Command
 
         foreach ($suiteConfig->getTestCases() as $testCaseClass) {
             $testCase = $this->testCaseFactory->create($testCaseClass);
+            $output->writeln($testCase->getName());
 
             foreach ($testCase->getTestMethods() as $method) {
                 $result = $testCase->runTest($method);
