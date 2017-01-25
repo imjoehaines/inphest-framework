@@ -15,8 +15,14 @@ use Inphest\Framework\Hooks\BeforeSuiteInterface;
 
 final class RunCommand extends Command
 {
+    /**
+     * @var TestCaseFactory
+     */
     private $testCaseFactory;
 
+    /**
+     * @param TestCaseFactory $testCaseFactory
+     */
     public function __construct(TestCaseFactory $testCaseFactory)
     {
         parent::__construct();
@@ -24,6 +30,9 @@ final class RunCommand extends Command
         $this->testCaseFactory = $testCaseFactory;
     }
 
+    /**
+     * @return void
+     */
     protected function configure() : void
     {
         $this->setName('run')
@@ -34,6 +43,14 @@ final class RunCommand extends Command
             );
     }
 
+    /**
+     * Run the command
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return void
+     * @throws InvalidArgumentException when config file doesn't exist
+     */
     protected function execute(InputInterface $input, OutputInterface $output) : void
     {
         $suiteConfigPath = $input->getArgument('suite_config');
@@ -78,6 +95,12 @@ final class RunCommand extends Command
         // 9. set exit code
     }
 
+    /**
+     * Get the given config file's config class - this exists only for typehinting
+     *
+     * @param string $path
+     * @return TestSuiteConfigInterface
+     */
     private function getConfig(string $path) : TestSuiteConfigInterface
     {
         return require $path;

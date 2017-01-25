@@ -29,16 +29,26 @@ final class TestCase implements TestCaseInterface
         $this->testMethods = $testMethods;
     }
 
+    /**
+     * @return string
+     */
     public function getName() : string
     {
         return get_class($this->instance);
     }
 
+    /**
+     * @return iterable
+     */
     public function getTestMethods() : iterable
     {
         return $this->testMethods;
     }
 
+    /**
+     * @param string $testName
+     * @return TestResultInterface
+     */
     public function runTest(string $testName) : TestResultInterface
     {
         try {

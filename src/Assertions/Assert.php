@@ -14,8 +14,7 @@ final class Assert
      * @param mixed $expected
      * @param mixed $actual
      * @return void
-     *
-     * @throws AssertionException
+     * @throws AssertionException when $expected isn't the same as $actual
      */
     public function same($expected, $actual) : void
     {
@@ -35,8 +34,7 @@ final class Assert
      * @param string $throwable
      * @param string $message
      * @return void
-     *
-     * @throws AssertionException
+     * @throws AssertionException when $callback doesn't throw or $throwable/$message don't match
      */
     public function throws(callable $callback, string $throwable, string $message = '') : void
     {

@@ -11,6 +11,12 @@ use Inphest\Framework\Hooks\HasHooksInterface;
 
 final class TestCaseFactory
 {
+    /**
+     * Create a new TestCase from the given class name
+     *
+     * @param string $fullyQualifiedClassname
+     * @return TestCaseInterface
+     */
     public function create(string $fullyQualifiedClassname) : TestCaseInterface
     {
         $instance = new $fullyQualifiedClassname;
