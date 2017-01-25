@@ -3,6 +3,9 @@
 namespace Inphest\Framework;
 
 use Inphest\Assertions\AssertionException;
+use Inphest\Framework\Results\PassingTest;
+use Inphest\Framework\Results\FailingTest;
+use Inphest\Framework\Results\TestResultInterface;
 
 final class TestCase
 {
