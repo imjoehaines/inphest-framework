@@ -6,8 +6,7 @@ use Inphest\Framework\TestSuiteConfigInterface;
 
 require_once 'ExampleTestCase.php';
 
-return new class implements TestSuiteConfigInterface
-{
+return new class implements TestSuiteConfigInterface {
     /**
      * @return iterable
      */
