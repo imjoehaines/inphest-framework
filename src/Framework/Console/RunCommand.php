@@ -8,9 +8,9 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Inphest\Framework\Factory\TestCaseFactory;
 use Inphest\Framework\TestSuiteConfigInterface;
 use Inphest\Framework\Hooks\AfterSuiteInterface;
+use Inphest\Framework\Factories\TestCaseFactory;
 use Inphest\Framework\Hooks\BeforeSuiteInterface;
 
 final class RunCommand extends Command

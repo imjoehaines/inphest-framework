@@ -12,7 +12,7 @@ if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
 use Symfony\Component\Console\Application;
 
 use Inphest\Framework\Console\RunCommand;
-use Inphest\Framework\Factory\TestCaseFactory;
+use Inphest\Framework\Factories\TestCaseFactory;
 
 $application = new Application('Inphest');
 
