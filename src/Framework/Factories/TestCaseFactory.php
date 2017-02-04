@@ -23,7 +23,7 @@ final class TestCaseFactory
 
         $reflectionClass = new ReflectionClass($instance);
 
-        // grap all the methods starting with 'test'
+        // grab all the methods starting with 'test'
         // TODO make this less gross
         $testMethods = array_filter(array_map(function (ReflectionMethod $method) {
             return $method->name;
