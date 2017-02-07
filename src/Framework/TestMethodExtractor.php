@@ -5,7 +5,7 @@ namespace Inphest\Framework;
 use ReflectionClass;
 use ReflectionMethod;
 
-class TestMethodExtractor
+final class TestMethodExtractor
 {
     /**
      * Extract test method names from the given class instance
