@@ -16,6 +16,16 @@ use Inphest\Framework\Hooks\BeforeSuiteInterface;
 final class RunCommand extends Command
 {
     /**
+     * @var int
+     */
+    private const EXIT_CODE_SUCCESS = 0;
+
+    /**
+     * @var int
+     */
+    private const EXIT_CODE_FAILURE = 2;
+
+    /**
      * @var TestCaseFactory
      */
     private $testCaseFactory;
@@ -48,10 +58,10 @@ final class RunCommand extends Command
      *
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return void
+     * @return int
      * @throws InvalidArgumentException when config file doesn't exist
      */
-    protected function execute(InputInterface $input, OutputInterface $output) : void
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $suiteConfigPath = $input->getArgument('suite_config');
 
@@ -62,6 +72,8 @@ final class RunCommand extends Command
             ));
         }
 
+        $formatter = $this->getHelper('formatter');
+
         $suiteConfig = $this->getConfig($suiteConfigPath);
 
         // TODO: move this logic to a TestRunner
@@ -71,6 +83,8 @@ final class RunCommand extends Command
             $suiteConfig->beforeSuite();
         }
 
+        $exitCode = static::EXIT_CODE_SUCCESS;
+
         foreach ($suiteConfig->getTestCases() as $testCaseClass) {
             $testCase = $this->testCaseFactory->create($testCaseClass);
             $output->writeln($testCase->getName());
@@ -78,10 +92,15 @@ final class RunCommand extends Command
             foreach ($testCase->getTestMethods() as $method) {
                 $result = $testCase->runTest($method);
 
-                $output->writeln($result->getOutput());
+                $output->writeln('  ' . $result->getOutput());
+
+                if ($result->isFailure()) {
+                    $exitCode = static::EXIT_CODE_FAILURE;
+                }
             }
         }
 
+        // TODO: implement this as a decorator
         if ($suiteConfig instanceof AfterSuiteInterface) {
             $suiteConfig->afterSuite();
         }
@@ -89,10 +108,9 @@ final class RunCommand extends Command
         // end TestRunner code
 
         // TODO
-        // 8. print suite results
+        // print suite results
 
-        // TODO
-        // 9. set exit code
+        return $exitCode;
     }
 
     /**

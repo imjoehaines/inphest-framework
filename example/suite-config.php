@@ -5,6 +5,7 @@ namespace Example;
 use Inphest\Framework\TestSuiteConfigInterface;
 
 require_once 'ExampleTestCase.php';
+require_once 'ExampleTestCase2.php';
 
 return new class implements TestSuiteConfigInterface {
     /**
@@ -14,6 +15,7 @@ return new class implements TestSuiteConfigInterface {
     {
         return [
             ExampleTestCase::class,
+            ExampleTestCase2::class,
         ];
     }
 };

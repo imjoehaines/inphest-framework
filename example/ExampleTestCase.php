@@ -40,11 +40,9 @@ class ExampleTestCase implements HasHooksInterface, AfterTestInterface, BeforeTe
 
     public function afterTest(TestResultInterface $result) : void
     {
-        echo PHP_EOL .  '!!!After Test'. PHP_EOL;
     }
 
     public function beforeTest() : void
     {
-        echo PHP_EOL .  '!!!Before Test'. PHP_EOL;
     }
 }

@@ -23,11 +23,12 @@ final class TestCaseFactory
 
         $reflectionClass = new ReflectionClass($instance);
 
-        // grab all the methods starting with 'test'
-        // TODO make this less gross
-        $testMethods = array_filter(array_map(function (ReflectionMethod $method) {
+        $publicMethods = array_map(function (ReflectionMethod $method) {
             return $method->name;
-        }, $reflectionClass->getMethods(ReflectionMethod::IS_PUBLIC)), function (string $method) {
+        }, $reflectionClass->getMethods(ReflectionMethod::IS_PUBLIC));
+
+        // grab only methods starting with 'test'
+        $testMethods = array_filter($publicMethods, function (string $method) {
             return strpos($method, 'test') === 0;
         });
 
