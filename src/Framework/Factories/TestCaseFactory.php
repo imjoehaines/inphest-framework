@@ -2,11 +2,9 @@
 
 namespace Inphest\Framework\Factories;
 
-use ReflectionClass;
-use ReflectionMethod;
-
 use Inphest\Framework\TestCase;
 use Inphest\Framework\TestCaseInterface;
+use Inphest\Framework\TestMethodExtractor;
 use Inphest\Framework\Hooks\HasHooksInterface;
 
 final class TestCaseFactory
@@ -21,16 +19,7 @@ final class TestCaseFactory
     {
         $instance = new $fullyQualifiedClassname;
 
-        $reflectionClass = new ReflectionClass($instance);
-
-        $publicMethods = array_map(function (ReflectionMethod $method) {
-            return $method->name;
-        }, $reflectionClass->getMethods(ReflectionMethod::IS_PUBLIC));
-
-        // grab only methods starting with 'test'
-        $testMethods = array_filter($publicMethods, function (string $method) {
-            return strpos($method, 'test') === 0;
-        });
+        $testMethods = TestMethodExtractor::extract($instance);
 
         $testCase = new TestCase($instance, $testMethods);
 
