@@ -10,11 +10,6 @@ use Inphest\Framework\Results\TestResultInterface;
 final class TestCase implements TestCaseInterface
 {
     /**
-     * @var string
-     */
-    private $name;
-
-    /**
      * @var mixed
      */
     private $instance;
