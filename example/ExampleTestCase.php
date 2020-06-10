@@ -2,25 +2,34 @@
 
 namespace Example;
 
-use Inphest\Assertions\AssertionException;
+use Inphest\Assertions\Assert;
+use InvalidArgumentException;
 
 class ExampleTestCase
 {
-    public function testTheThing()
+    public function testOneEqualsOne(Assert $assert)
     {
-        throw new AssertionException('Error Processing Request');
+        $assert->same(1, 1);
     }
 
-    public function testTheThing4()
+    public function testOneEqualsTwo(Assert $assert)
     {
+        $assert->same(1, 2);
     }
 
-    public function testTheThing3()
+    public function testTwoEqualsTwo(Assert $assert)
     {
+        $assert->same(1, 2);
     }
 
-    public function testTheThing2()
+    public function testThrows(Assert $assert)
     {
-        throw new AssertionException('Error Processing Request');
+        $assert->throws(
+            function () {
+                throw new InvalidArgumentException('hey');
+            },
+            InvalidArgumentException::class,
+            'hey'
+        );
     }
 }

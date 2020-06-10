@@ -2,21 +2,34 @@
 
 namespace Example;
 
+use Inphest\Assertions\Assert;
+use InvalidArgumentException;
+
 class ExampleTestCase2
 {
-    public function testNothing()
+    public function testOneEqualsOne(Assert $assert)
     {
+        $assert->same(1, 1);
     }
 
-    public function testNothing4()
+    public function testOneEqualsTwo(Assert $assert)
     {
+        $assert->same(1, 2);
     }
 
-    public function testNothing3()
+    public function testTwoEqualsTwo(Assert $assert)
     {
+        $assert->same(1, 2);
     }
 
-    public function testNothing2()
+    public function testThrows(Assert $assert)
     {
+        $assert->throws(
+            function () {
+                throw new InvalidArgumentException('hey');
+            },
+            InvalidArgumentException::class,
+            'hey'
+        );
     }
 }

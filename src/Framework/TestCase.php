@@ -2,6 +2,7 @@
 
 namespace Inphest\Framework;
 
+use Inphest\Assertions\Assert;
 use Inphest\Assertions\AssertionException;
 use Inphest\Framework\Results\PassingTest;
 use Inphest\Framework\Results\FailingTest;
@@ -49,7 +50,7 @@ final class TestCase implements TestCaseInterface
     public function runTest(string $testName) : TestResultInterface
     {
         try {
-            $this->instance->$testName();
+            $this->instance->$testName(new Assert());
 
             return new PassingTest($testName);
         } catch (AssertionException $e) {

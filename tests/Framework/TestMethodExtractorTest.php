@@ -17,16 +17,10 @@ final class TestMethodExtractorTest extends TestCase
     public function testItExtractsNothingWhenThereAreNoPublicMethods() : void
     {
         $instance = new class {
-            /**
-             * @return void
-             */
             protected function shouldNotBeExtracted() : void
             {
             }
 
-            /**
-             * @return void
-             */
             private function alsoShouldNotBeExtracted() : void
             {
             }
@@ -47,16 +41,10 @@ final class TestMethodExtractorTest extends TestCase
     public function testItExtractsNothingWhenThereAreNoPublicMethodsStartingWithTest() : void
     {
         $instance = new class {
-            /**
-             * @return void
-             */
             public function shouldNotBeExtracted() : void
             {
             }
 
-            /**
-             * @return void
-             */
             public function alsoShouldNotBeExtracted() : void
             {
             }
@@ -77,23 +65,14 @@ final class TestMethodExtractorTest extends TestCase
     public function testItExtractsPublicMethodsStartingWithTest() : void
     {
         $instance = new class {
-            /**
-             * @return void
-             */
             public function shouldNotBeExtracted() : void
             {
             }
 
-            /**
-             * @return void
-             */
             private function alsoShouldNotBeExtracted() : void
             {
             }
 
-            /**
-             * @return void
-             */
             public function testShouldBeExtracted() : void
             {
             }
