@@ -1,22 +1,24 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Inphest\Assertions;
 
 use Throwable;
 
-use Inphest\Assertions\AssertionException;
-
 final class Assert
 {
     /**
-     * Assert that $actual is the same as (===) $expected
+     * Assert that $actual is the same as (===) $expected.
      *
      * @param mixed $expected
      * @param mixed $actual
-     * @return void
+     *
      * @throws AssertionException when $expected isn't the same as $actual
+     *
+     * @return void
      */
-    public function same($expected, $actual) : void
+    public function same($expected, $actual): void
     {
         if ($expected !== $actual) {
             throw new AssertionException(sprintf(
@@ -28,11 +30,11 @@ final class Assert
     }
 
     /**
-     * Assert that the given $callback throws a matching instance of $expected
+     * Assert that the given $callback throws a matching instance of $expected.
      *
      * @throws AssertionException when $callback doesn't throw or $expected don't match
      */
-    public function throws(callable $callback, Throwable $expected) : void
+    public function throws(callable $callback, Throwable $expected): void
     {
         try {
             $callback();

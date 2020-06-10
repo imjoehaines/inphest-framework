@@ -1,11 +1,13 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Inphest\Framework;
 
 use Inphest\Assertions\Assert;
 use Inphest\Assertions\AssertionException;
-use Inphest\Framework\Results\PassingTest;
 use Inphest\Framework\Results\FailingTest;
+use Inphest\Framework\Results\PassingTest;
 use Inphest\Framework\Results\TestResultInterface;
 
 final class TestCase implements TestCaseInterface
@@ -29,17 +31,17 @@ final class TestCase implements TestCaseInterface
         $this->assert = $assert;
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return get_class($this->instance);
     }
 
-    public function getTestMethods() : iterable
+    public function getTestMethods(): iterable
     {
         return $this->testMethods;
     }
 
-    public function runTest(string $testName) : TestResultInterface
+    public function runTest(string $testName): TestResultInterface
     {
         try {
             $this->instance->{$testName}($this->assert);

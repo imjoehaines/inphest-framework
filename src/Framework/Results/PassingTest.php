@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Inphest\Framework\Results;
 
@@ -15,15 +17,15 @@ final class PassingTest implements TestResultInterface
     /**
      * @return string
      */
-    public function getOutput() : string
+    public function getOutput(): string
     {
-        return '✔ ' . $this->name;
+        return '✔ '.$this->name;
     }
 
     /**
      * @return bool
      */
-    public function isFailure() : bool
+    public function isFailure(): bool
     {
         return false;
     }

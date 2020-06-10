@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Inphest\Framework\Factories;
 
@@ -17,14 +19,15 @@ final class TestCaseFactory
     }
 
     /**
-     * Create a new TestCase from the given class name
+     * Create a new TestCase from the given class name.
      *
      * @param string $fullyQualifiedClassname
+     *
      * @return TestCaseInterface
      */
-    public function create(string $fullyQualifiedClassname) : TestCaseInterface
+    public function create(string $fullyQualifiedClassname): TestCaseInterface
     {
-        $instance = new $fullyQualifiedClassname;
+        $instance = new $fullyQualifiedClassname();
 
         $testMethods = TestMethodExtractor::extract($instance);
 

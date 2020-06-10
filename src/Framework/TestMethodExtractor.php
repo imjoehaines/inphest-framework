@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Inphest\Framework;
 
@@ -8,12 +10,13 @@ use ReflectionMethod;
 final class TestMethodExtractor
 {
     /**
-     * Extract test method names from the given class instance
+     * Extract test method names from the given class instance.
      *
      * @param mixed $instance
+     *
      * @return array
      */
-    public static function extract($instance) : array
+    public static function extract($instance): array
     {
         $reflectionClass = new ReflectionClass($instance);
 

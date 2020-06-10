@@ -1,15 +1,16 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Inphest\Framework\Console;
 
+use Inphest\Framework\Factories\TestCaseFactory;
+use Inphest\Framework\TestSuiteConfigInterface;
 use InvalidArgumentException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-
-use Inphest\Framework\TestSuiteConfigInterface;
-use Inphest\Framework\Factories\TestCaseFactory;
 
 final class RunCommand extends Command
 {
@@ -31,7 +32,7 @@ final class RunCommand extends Command
     /**
      * @return void
      */
-    protected function configure() : void
+    protected function configure(): void
     {
         $this->setName('run')
             ->addArgument(
@@ -42,14 +43,16 @@ final class RunCommand extends Command
     }
 
     /**
-     * Run the command
+     * Run the command.
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
-     * @return int
+     *
      * @throws InvalidArgumentException when config file doesn't exist
+     *
+     * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output) : int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $suiteConfigPath = $input->getArgument('suite_config');
 
@@ -73,7 +76,7 @@ final class RunCommand extends Command
             foreach ($testCase->getTestMethods() as $method) {
                 $result = $testCase->runTest($method);
 
-                $output->writeln('  ' . $result->getOutput());
+                $output->writeln('  '.$result->getOutput());
 
                 if ($result->isFailure()) {
                     $exitCode = self::FAILURE;
@@ -90,12 +93,13 @@ final class RunCommand extends Command
     }
 
     /**
-     * Get the given config file's config class - this exists only for typehinting
+     * Get the given config file's config class - this exists only for typehinting.
      *
      * @param string $path
+     *
      * @return TestSuiteConfigInterface
      */
-    private function getConfig(string $path) : TestSuiteConfigInterface
+    private function getConfig(string $path): TestSuiteConfigInterface
     {
         return require $path;
     }

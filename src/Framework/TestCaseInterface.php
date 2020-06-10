@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Inphest\Framework;
 
@@ -9,16 +11,17 @@ interface TestCaseInterface
     /**
      * @return string
      */
-    public function getName() : string;
+    public function getName(): string;
 
     /**
      * @return iterable
      */
-    public function getTestMethods() : iterable;
+    public function getTestMethods(): iterable;
 
     /**
      * @param string $testName
+     *
      * @return TestResultInterface
      */
-    public function runTest(string $testName) : TestResultInterface;
+    public function runTest(string $testName): TestResultInterface;
 }
