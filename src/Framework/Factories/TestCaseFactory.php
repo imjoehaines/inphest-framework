@@ -5,7 +5,6 @@ namespace Inphest\Framework\Factories;
 use Inphest\Framework\TestCase;
 use Inphest\Framework\TestCaseInterface;
 use Inphest\Framework\TestMethodExtractor;
-use Inphest\Framework\Hooks\HasHooksInterface;
 
 final class TestCaseFactory
 {
@@ -21,15 +20,6 @@ final class TestCaseFactory
 
         $testMethods = TestMethodExtractor::extract($instance);
 
-        $testCase = new TestCase($instance, $testMethods);
-
-        // wrap the test case in all of its requested hooks
-        if ($instance instanceof HasHooksInterface) {
-            foreach ($instance->getHooks($instance) as $hook) {
-                $testCase = new $hook($testCase, $instance);
-            }
-        }
-
-        return $testCase;
+        return new TestCase($instance, $testMethods);
     }
 }

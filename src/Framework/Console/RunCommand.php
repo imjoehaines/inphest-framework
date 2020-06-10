@@ -9,22 +9,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use Inphest\Framework\TestSuiteConfigInterface;
-use Inphest\Framework\Hooks\AfterSuiteInterface;
 use Inphest\Framework\Factories\TestCaseFactory;
-use Inphest\Framework\Hooks\BeforeSuiteInterface;
 
 final class RunCommand extends Command
 {
-    /**
-     * @var int
-     */
-    private const EXIT_CODE_SUCCESS = 0;
-
-    /**
-     * @var int
-     */
-    private const EXIT_CODE_FAILURE = 2;
-
     /**
      * @var TestCaseFactory
      */
@@ -72,18 +60,11 @@ final class RunCommand extends Command
             ));
         }
 
-        $formatter = $this->getHelper('formatter');
-
         $suiteConfig = $this->getConfig($suiteConfigPath);
 
         // TODO: move this logic to a TestRunner
 
-        // TODO: implement this as a decorator
-        if ($suiteConfig instanceof BeforeSuiteInterface) {
-            $suiteConfig->beforeSuite();
-        }
-
-        $exitCode = static::EXIT_CODE_SUCCESS;
+        $exitCode = self::SUCCESS;
 
         foreach ($suiteConfig->getTestCases() as $testCaseClass) {
             $testCase = $this->testCaseFactory->create($testCaseClass);
@@ -95,14 +76,9 @@ final class RunCommand extends Command
                 $output->writeln('  ' . $result->getOutput());
 
                 if ($result->isFailure()) {
-                    $exitCode = static::EXIT_CODE_FAILURE;
+                    $exitCode = self::FAILURE;
                 }
             }
-        }
-
-        // TODO: implement this as a decorator
-        if ($suiteConfig instanceof AfterSuiteInterface) {
-            $suiteConfig->afterSuite();
         }
 
         // end TestRunner code
