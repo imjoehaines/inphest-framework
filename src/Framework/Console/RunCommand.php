@@ -16,7 +16,7 @@ final class RunCommand extends Command
     /**
      * @var TestCaseFactory
      */
-    private $testCaseFactory;
+    private TestCaseFactory $testCaseFactory;
 
     /**
      * @param TestCaseFactory $testCaseFactory

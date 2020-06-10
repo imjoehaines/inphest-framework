@@ -14,6 +14,8 @@ final class TestCase implements TestCaseInterface
      */
     private $instance;
 
+    private array $testMethods;
+
     /**
      * @param mixed $instance
      * @param array $testMethods
