@@ -25,6 +25,8 @@ final class AssertTest extends TestCase
     {
         $assert = new Assert();
         $assert->same($expected, $actual);
+
+        $this->assertSame($expected, $actual);
     }
 
     /**
@@ -38,10 +40,7 @@ final class AssertTest extends TestCase
      */
     public function testSameFailsForValuesNotStrictlyEqual($expected, $actual, $message) : void
     {
-        $this->setExpectedException(
-            AssertionException::class,
-            $message
-        );
+        $this->expectExceptionObject(new AssertionException($message));
 
         $assert = new Assert();
         $assert->same($expected, $actual);
@@ -59,6 +58,10 @@ final class AssertTest extends TestCase
     ) : void {
         $assert = new Assert();
         $assert->throws($callback, $exception, $message);
+
+        $this->expectException($exception);
+        $this->expectExceptionMessage($message);
+        $callback();
     }
 
     /**
@@ -66,9 +69,8 @@ final class AssertTest extends TestCase
      */
     public function testThrowsFailsForCallbacksThatDoNotThrow() : void
     {
-        $this->setExpectedException(
-            AssertionException::class,
-            'Given callable did not throw (expecting "Exception")'
+        $this->expectExceptionObject(
+            new AssertionException('Given callable did not throw (expecting "Exception")')
         );
 
         $assert = new Assert();
@@ -82,9 +84,8 @@ final class AssertTest extends TestCase
      */
     public function testThrowsFailsForExceptionsWithIncorrectMessages() : void
     {
-        $this->setExpectedException(
-            AssertionException::class,
-            '"Not the right message" does not match expected message "A message"'
+        $this->expectExceptionObject(
+            new AssertionException('"Not the right message" does not match expected message "A message"')
         );
 
         $assert = new Assert();
