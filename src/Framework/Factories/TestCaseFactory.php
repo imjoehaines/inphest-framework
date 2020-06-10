@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Inphest\Framework\Factories;
 
@@ -6,6 +8,7 @@ use Inphest\Assertions\Assert;
 use Inphest\Framework\TestCase;
 use Inphest\Framework\TestCaseInterface;
 use Inphest\Framework\TestMethodExtractor;
+use ReflectionClass;
 
 final class TestCaseFactory
 {
@@ -17,17 +20,14 @@ final class TestCaseFactory
     }
 
     /**
-     * Create a new TestCase from the given class name
-     *
-     * @param string $fullyQualifiedClassname
-     * @return TestCaseInterface
+     * @psalm-param class-string $fullyQualifiedClassname
      */
-    public function create(string $fullyQualifiedClassname) : TestCaseInterface
+    public function create(string $fullyQualifiedClassname): TestCaseInterface
     {
-        $instance = new $fullyQualifiedClassname;
+        $class = new ReflectionClass($fullyQualifiedClassname);
 
-        $testMethods = TestMethodExtractor::extract($instance);
+        $instance = $class->newInstance();
 
-        return new TestCase($instance, $testMethods, $this->assert);
+        return new TestCase($instance, new TestMethodExtractor(), $this->assert);
     }
 }

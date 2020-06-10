@@ -1,10 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Inphest\Framework\Tests;
 
-use PHPUnit\Framework\TestCase;
-
 use Inphest\Framework\TestMethodExtractor;
+
+use PHPUnit\Framework\TestCase;
 
 final class TestMethodExtractorTest extends TestCase
 {
@@ -14,20 +16,21 @@ final class TestMethodExtractorTest extends TestCase
      *
      * @return void
      */
-    public function testItExtractsNothingWhenThereAreNoPublicMethods() : void
+    public function testItExtractsNothingWhenThereAreNoPublicMethods(): void
     {
-        $instance = new class {
-            protected function shouldNotBeExtracted() : void
+        $instance = new class() {
+            protected function shouldNotBeExtracted(): void
             {
+                $this->alsoShouldNotBeExtracted();
             }
 
-            private function alsoShouldNotBeExtracted() : void
+            private function alsoShouldNotBeExtracted(): void
             {
             }
         };
 
         $expected = [];
-        $actual = TestMethodExtractor::extract($instance);
+        $actual = (new TestMethodExtractor())->extract($instance);
 
         $this->assertSame($expected, $actual);
     }
@@ -38,20 +41,20 @@ final class TestMethodExtractorTest extends TestCase
      *
      * @return void
      */
-    public function testItExtractsNothingWhenThereAreNoPublicMethodsStartingWithTest() : void
+    public function testItExtractsNothingWhenThereAreNoPublicMethodsStartingWithTest(): void
     {
-        $instance = new class {
-            public function shouldNotBeExtracted() : void
+        $instance = new class() {
+            public function shouldNotBeExtracted(): void
             {
             }
 
-            public function alsoShouldNotBeExtracted() : void
+            public function alsoShouldNotBeExtracted(): void
             {
             }
         };
 
         $expected = [];
-        $actual = TestMethodExtractor::extract($instance);
+        $actual = (new TestMethodExtractor())->extract($instance);
 
         $this->assertSame($expected, $actual);
     }
@@ -62,24 +65,24 @@ final class TestMethodExtractorTest extends TestCase
      *
      * @return void
      */
-    public function testItExtractsPublicMethodsStartingWithTest() : void
+    public function testItExtractsPublicMethodsStartingWithTest(): void
     {
-        $instance = new class {
-            public function shouldNotBeExtracted() : void
+        $instance = new class() {
+            public function shouldNotBeExtracted(): void
             {
             }
 
-            private function alsoShouldNotBeExtracted() : void
+            private function alsoShouldNotBeExtracted(): void
             {
             }
 
-            public function testShouldBeExtracted() : void
+            public function testShouldBeExtracted(): void
             {
             }
         };
 
         $expected = ['testShouldBeExtracted'];
-        $actual = TestMethodExtractor::extract($instance);
+        $actual = (new TestMethodExtractor())->extract($instance);
 
         $this->assertSame($expected, $actual);
     }

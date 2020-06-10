@@ -1,48 +1,58 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Inphest\Framework;
 
+use Closure;
 use Inphest\Assertions\Assert;
 use Inphest\Assertions\AssertionException;
-use Inphest\Framework\Results\PassingTest;
 use Inphest\Framework\Results\FailingTest;
+use Inphest\Framework\Results\PassingTest;
 use Inphest\Framework\Results\TestResultInterface;
 
 final class TestCase implements TestCaseInterface
 {
-    /**
-     * @var mixed
-     */
-    private $instance;
+    private object $instance;
 
+    /**
+     * @psalm-var list<string>
+     */
     private array $testMethods;
 
     private Assert $assert;
 
-    /**
-     * @param mixed $instance
-     */
-    public function __construct($instance, array $testMethods, Assert $assert)
-    {
+    public function __construct(
+        object $instance,
+        TestMethodExtractor $extractor,
+        Assert $assert
+    ) {
         $this->instance = $instance;
-        $this->testMethods = $testMethods;
+        $this->testMethods = $extractor->extract($instance);
         $this->assert = $assert;
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return get_class($this->instance);
     }
 
-    public function getTestMethods() : iterable
+    /**
+     * @psalm-return iterable<TestResultInterface>
+     */
+    public function run(): iterable
     {
-        return $this->testMethods;
+        foreach ($this->testMethods as $name) {
+            $method = Closure::fromCallable([$this->instance, $name]);
+
+            yield $this->runMethod($name, $method);
+        }
     }
 
-    public function runTest(string $testName) : TestResultInterface
+    private function runMethod(string $testName, Closure $method): TestResultInterface
     {
         try {
-            $this->instance->{$testName}($this->assert);
+            $method($this->assert);
 
             return new PassingTest($testName);
         } catch (AssertionException $e) {

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<psalm
+    errorLevel="1"
+    strictBinaryOperands="true"
+    resolveFromConfigFile="true"
+    findUnusedVariablesAndParams="true"
+    findUnusedCode="true"
+    ensureArrayStringOffsetsExist="true"
+    skipChecksOnUnresolvableIncludes="false"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+>
+    <projectFiles>
+        <!-- Explicitly include "bin/inphest" as Psalm won't by default -->
+        <file name="bin/inphest" />
+
+        <directory name="bin" />
+        <directory name="src" />
+        <directory name="tests" />
+
+        <ignoreFiles>
+            <directory name="vendor" />
+        </ignoreFiles>
+    </projectFiles>
+
+    <plugins>
+        <pluginClass class="Psalm\PhpUnitPlugin\Plugin" />
+    </plugins>
+</psalm>

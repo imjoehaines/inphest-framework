@@ -1,19 +1,26 @@
 #!/usr/bin/env php
 <?php
 
-if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
-    require_once __DIR__ . '/../vendor/autoload.php';
-} elseif (file_exists(__DIR__ . '/../../../autoload.php')) {
-    require_once __DIR__ . '/../../../autoload.php';
-} else {
-    die('Could not find `vendor/autoload.php`. You probably need to run `composer install`.');
-}
-
 use Inphest\Assertions\Assert;
 use Symfony\Component\Console\Application;
 
 use Inphest\Framework\Console\RunCommand;
 use Inphest\Framework\Factories\TestCaseFactory;
+
+$candidates = [
+    __DIR__ . '/../vendor/autoload.php',
+    __DIR__ . '/../../../autoload.php'
+];
+
+foreach ($candidates as $candidate) {
+    if (file_exists($candidate)) {
+        require_once $candidate;
+    }
+}
+
+if (!class_exists(RunCommand::class)) {
+    die('Could not find `vendor/autoload.php`. You probably need to run `composer install`.');
+}
 
 $application = new Application('Inphest');
 

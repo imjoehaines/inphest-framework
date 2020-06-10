@@ -1,16 +1,17 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Inphest\Assertions\Tests;
 
-use Closure;
-use stdClass;
-use Exception;
 use ArithmeticError;
-use InvalidArgumentException;
-use PHPUnit\Framework\TestCase;
-
+use Exception;
 use Inphest\Assertions\Assert;
 use Inphest\Assertions\AssertionException;
+use InvalidArgumentException;
+
+use PHPUnit\Framework\TestCase;
+use stdClass;
 use Throwable;
 
 final class AssertTest extends TestCase
@@ -20,9 +21,8 @@ final class AssertTest extends TestCase
      *
      * @param mixed $expected
      * @param mixed $actual
-     * @return void
      */
-    public function testSamePassesForStrictlyEqualValues($expected, $actual) : void
+    public function testSamePassesForStrictlyEqualValues($expected, $actual): void
     {
         $assert = new Assert();
         $assert->same($expected, $actual);
@@ -37,9 +37,8 @@ final class AssertTest extends TestCase
      * @param mixed $expected
      * @param mixed $actual
      * @param string $message
-     * @return void
      */
-    public function testSameFailsForValuesNotStrictlyEqual($expected, $actual, $message) : void
+    public function testSameFailsForValuesNotStrictlyEqual($expected, $actual, string $message): void
     {
         $this->expectExceptionObject(new AssertionException($message));
 
@@ -49,13 +48,11 @@ final class AssertTest extends TestCase
 
     /**
      * @dataProvider throwingCallbackProvider
-     *
-     * @return void
      */
     public function testThrowsPassesWhenCallableThrowsTheCorrectException(
         callable $callback,
         Throwable $expected
-    ) : void {
+    ): void {
         $assert = new Assert();
         $assert->throws($callback, $expected);
 
@@ -65,25 +62,19 @@ final class AssertTest extends TestCase
         $callback();
     }
 
-    /**
-     * @return void
-     */
-    public function testThrowsFailsForCallbacksThatDoNotThrow() : void
+    public function testThrowsFailsForCallbacksThatDoNotThrow(): void
     {
         $this->expectExceptionObject(
             new AssertionException('Given callable did not throw (expecting "Exception (0)" — "boop")')
         );
 
         $assert = new Assert();
-        $assert->throws(function () {
+        $assert->throws(function (): void {
             // noop
         }, new Exception('boop'));
     }
 
-    /**
-     * @return void
-     */
-    public function testThrowsFailsForExceptionsWithIncorrectMessages() : void
+    public function testThrowsFailsForExceptionsWithIncorrectMessages(): void
     {
         $this->expectExceptionObject(
             new AssertionException('"Not the right message" does not match expected message "A message"')
@@ -91,14 +82,17 @@ final class AssertTest extends TestCase
 
         $assert = new Assert();
         $assert->throws(
-            function () {
+            function (): void {
                 throw new Exception('Not the right message');
             },
             new Exception('A message')
         );
     }
 
-    public function strictEqualProvider() : array
+    /**
+     * @psalm-return iterable<array-key, array{mixed, mixed}>
+     */
+    public function strictEqualProvider(): iterable
     {
         $instance = new stdClass();
 
@@ -118,7 +112,10 @@ final class AssertTest extends TestCase
         ];
     }
 
-    public function equalProvider() : array
+    /**
+     * @psalm-return iterable<array-key, array{mixed, mixed, string}>
+     */
+    public function equalProvider(): iterable
     {
         return [
             [true, 1, 'true is not the same as 1'],
@@ -134,7 +131,10 @@ final class AssertTest extends TestCase
         ];
     }
 
-    public function notEqualProvider() : array
+    /**
+     * @psalm-return iterable<array-key, array{mixed, mixed, string}>
+     */
+    public function notEqualProvider(): iterable
     {
         return [
             [true, 0, 'true is not the same as 0'],
@@ -147,33 +147,36 @@ final class AssertTest extends TestCase
         ];
     }
 
-    public function throwingCallbackProvider() : array
+    /**
+     * @psalm-return iterable<array-key, array{callable, Throwable}>
+     */
+    public function throwingCallbackProvider(): iterable
     {
         return [
             [
-                [$this, 'throwingCallable'],
+                fn () => $this->throwingCallable(),
                 new Exception('throwingCallable message'),
             ],
             [
-                function () {
+                function (): void {
                     throw new Exception('Exception message');
                 },
                 new Exception('Exception message'),
             ],
             [
-                function () {
+                function (): void {
                     throw new InvalidArgumentException('InvalidArgumentException message');
                 },
                 new InvalidArgumentException('InvalidArgumentException message'),
             ],
             [
-                function () {
+                function (): void {
                     throw new AssertionException('AssertionException message');
                 },
                 new AssertionException('AssertionException message'),
             ],
             [
-                function () {
+                function (): void {
                     throw new ArithmeticError('ArithmeticError message');
                 },
                 new ArithmeticError('ArithmeticError message'),
@@ -181,7 +184,7 @@ final class AssertTest extends TestCase
         ];
     }
 
-    public function throwingCallable()
+    public function throwingCallable(): void
     {
         throw new Exception('throwingCallable message');
     }

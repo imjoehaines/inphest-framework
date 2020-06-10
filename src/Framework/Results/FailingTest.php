@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Inphest\Framework\Results;
 
@@ -6,28 +8,21 @@ use Throwable;
 
 final class FailingTest implements TestResultInterface
 {
-    /**
-     * @param string $name
-     * @param Throwable $failure
-     */
+    private string $name;
+    private Throwable $failure;
+
     public function __construct(string $name, Throwable $failure)
     {
         $this->name = $name;
         $this->failure = $failure;
     }
 
-    /**
-     * @return string
-     */
-    public function getOutput() : string
+    public function getOutput(): string
     {
-        return '✘ ' . $this->name;
+        return '✘ ' . $this->name . ' — ' . $this->failure->getMessage();
     }
 
-    /**
-     * @return bool
-     */
-    public function isFailure() : bool
+    public function isFailure(): bool
     {
         return true;
     }

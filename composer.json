@@ -19,6 +19,19 @@
         "symfony/console": "^5.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.2.2"
+        "phpunit/phpunit": "^9.2.2",
+        "vimeo/psalm": "^3.11",
+        "symplify/easy-coding-standard": "^8.0",
+        "psalm/plugin-phpunit": "^0.10.1"
+    },
+    "scripts": {
+        "test": [
+            "@test:lint",
+            "@test:psalm",
+            "@test:unit"
+        ],
+        "test:unit": "phpunit --testdox --colors=always",
+        "test:lint": "ecs check --ansi",
+        "test:psalm": "psalm"
     }
 }

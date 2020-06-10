@@ -1,10 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Inphest\Assertions;
 
 use Throwable;
-
-use Inphest\Assertions\AssertionException;
 
 final class Assert
 {
@@ -13,16 +13,16 @@ final class Assert
      *
      * @param mixed $expected
      * @param mixed $actual
-     * @return void
+     *
      * @throws AssertionException when $expected isn't the same as $actual
      */
-    public function same($expected, $actual) : void
+    public function same($expected, $actual): void
     {
         if ($expected !== $actual) {
             throw new AssertionException(sprintf(
                 '%s is not the same as %s',
-                json_encode($expected),
-                json_encode($actual)
+                json_encode($expected, JSON_THROW_ON_ERROR),
+                json_encode($actual, JSON_THROW_ON_ERROR)
             ));
         }
     }
@@ -32,7 +32,7 @@ final class Assert
      *
      * @throws AssertionException when $callback doesn't throw or $expected don't match
      */
-    public function throws(callable $callback, Throwable $expected) : void
+    public function throws(callable $callback, Throwable $expected): void
     {
         try {
             $callback();
