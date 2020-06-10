@@ -17,40 +17,32 @@ final class TestCase implements TestCaseInterface
 
     private array $testMethods;
 
+    private Assert $assert;
+
     /**
      * @param mixed $instance
-     * @param array $testMethods
      */
-    public function __construct($instance, array $testMethods)
+    public function __construct($instance, array $testMethods, Assert $assert)
     {
         $this->instance = $instance;
         $this->testMethods = $testMethods;
+        $this->assert = $assert;
     }
 
-    /**
-     * @return string
-     */
     public function getName() : string
     {
         return get_class($this->instance);
     }
 
-    /**
-     * @return iterable
-     */
     public function getTestMethods() : iterable
     {
         return $this->testMethods;
     }
 
-    /**
-     * @param string $testName
-     * @return TestResultInterface
-     */
     public function runTest(string $testName) : TestResultInterface
     {
         try {
-            $this->instance->$testName(new Assert());
+            $this->instance->{$testName}($this->assert);
 
             return new PassingTest($testName);
         } catch (AssertionException $e) {

@@ -2,12 +2,20 @@
 
 namespace Inphest\Framework\Factories;
 
+use Inphest\Assertions\Assert;
 use Inphest\Framework\TestCase;
 use Inphest\Framework\TestCaseInterface;
 use Inphest\Framework\TestMethodExtractor;
 
 final class TestCaseFactory
 {
+    private Assert $assert;
+
+    public function __construct(Assert $assert)
+    {
+        $this->assert = $assert;
+    }
+
     /**
      * Create a new TestCase from the given class name
      *
@@ -20,6 +28,6 @@ final class TestCaseFactory
 
         $testMethods = TestMethodExtractor::extract($instance);
 
-        return new TestCase($instance, $testMethods);
+        return new TestCase($instance, $testMethods, $this->assert);
     }
 }
