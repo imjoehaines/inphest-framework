@@ -11,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 use Inphest\Assertions\Assert;
 use Inphest\Assertions\AssertionException;
+use Throwable;
 
 final class AssertTest extends TestCase
 {
@@ -53,14 +54,14 @@ final class AssertTest extends TestCase
      */
     public function testThrowsPassesWhenCallableThrowsTheCorrectException(
         callable $callback,
-        string $exception,
-        string $message
+        Throwable $expected
     ) : void {
         $assert = new Assert();
-        $assert->throws($callback, $exception, $message);
+        $assert->throws($callback, $expected);
 
-        $this->expectException($exception);
-        $this->expectExceptionMessage($message);
+        $this->expectException(get_class($expected));
+        $this->expectExceptionMessage($expected->getMessage());
+        $this->expectExceptionCode($expected->getCode());
         $callback();
     }
 
@@ -70,13 +71,13 @@ final class AssertTest extends TestCase
     public function testThrowsFailsForCallbacksThatDoNotThrow() : void
     {
         $this->expectExceptionObject(
-            new AssertionException('Given callable did not throw (expecting "Exception")')
+            new AssertionException('Given callable did not throw (expecting "Exception (0)" — "boop")')
         );
 
         $assert = new Assert();
         $assert->throws(function () {
             // noop
-        }, Exception::class);
+        }, new Exception('boop'));
     }
 
     /**
@@ -93,8 +94,7 @@ final class AssertTest extends TestCase
             function () {
                 throw new Exception('Not the right message');
             },
-            Exception::class,
-            'A message'
+            new Exception('A message')
         );
     }
 
@@ -150,34 +150,33 @@ final class AssertTest extends TestCase
     public function throwingCallbackProvider() : array
     {
         return [
-            [[$this, 'throwingCallable'], Exception::class, 'throwingCallable message'],
+            [
+                [$this, 'throwingCallable'],
+                new Exception('throwingCallable message'),
+            ],
             [
                 function () {
                     throw new Exception('Exception message');
                 },
-                Exception::class,
-                'Exception message',
+                new Exception('Exception message'),
             ],
             [
                 function () {
                     throw new InvalidArgumentException('InvalidArgumentException message');
                 },
-                InvalidArgumentException::class,
-                'InvalidArgumentException message',
+                new InvalidArgumentException('InvalidArgumentException message'),
             ],
             [
                 function () {
                     throw new AssertionException('AssertionException message');
                 },
-                AssertionException::class,
-                'AssertionException message',
+                new AssertionException('AssertionException message'),
             ],
             [
                 function () {
                     throw new ArithmeticError('ArithmeticError message');
                 },
-                ArithmeticError::class,
-                'ArithmeticError message',
+                new ArithmeticError('ArithmeticError message'),
             ],
         ];
     }

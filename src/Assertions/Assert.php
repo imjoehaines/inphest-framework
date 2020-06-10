@@ -28,32 +28,36 @@ final class Assert
     }
 
     /**
-     * Assert that the given $callback throws an instance of $throwable
+     * Assert that the given $callback throws a matching instance of $expected
      *
-     * @param callable $callback
-     * @param string $throwable
-     * @param string $message
-     * @return void
-     * @throws AssertionException when $callback doesn't throw or $throwable/$message don't match
+     * @throws AssertionException when $callback doesn't throw or $expected don't match
      */
-    public function throws(callable $callback, string $throwable, string $message = '') : void
+    public function throws(callable $callback, Throwable $expected) : void
     {
         try {
             $callback();
         } catch (Throwable $e) {
-            if (!$e instanceof $throwable) {
+            if (!$e instanceof $expected) {
                 throw new AssertionException(sprintf(
                     'Throwable "%s" is not an instance of "%s"',
                     get_class($e),
-                    $throwable
+                    get_class($expected)
                 ));
             }
 
-            if ($message && $message !== $e->getMessage()) {
+            if ($expected->getMessage() !== $e->getMessage()) {
                 throw new AssertionException(sprintf(
                     '"%s" does not match expected message "%s"',
                     $e->getMessage(),
-                    $message
+                    $expected->getMessage()
+                ));
+            }
+
+            if ($expected->getCode() !== $e->getCode()) {
+                throw new AssertionException(sprintf(
+                    '"%d" does not match expected message "%d"',
+                    $e->getCode(),
+                    $expected->getCode()
                 ));
             }
 
@@ -61,8 +65,10 @@ final class Assert
         }
 
         throw new AssertionException(sprintf(
-            'Given callable did not throw (expecting "%s")',
-            $throwable
+            'Given callable did not throw (expecting "%s (%d)" — "%s")',
+            get_class($expected),
+            $expected->getCode(),
+            $expected->getMessage()
         ));
     }
 }

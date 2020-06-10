@@ -28,8 +28,7 @@ class ExampleTestCase2
             function () {
                 throw new InvalidArgumentException('hey');
             },
-            InvalidArgumentException::class,
-            'hey'
+            new InvalidArgumentException('hey'),
         );
     }
 }
