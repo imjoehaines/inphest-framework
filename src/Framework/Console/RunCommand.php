@@ -70,27 +70,47 @@ final class RunCommand extends Command
 
         // TODO: move this logic to a TestRunner
 
-        $exitCode = self::SUCCESS;
+        $output->writeln('Inphest v0.0.0');
+
+        $successes = 0;
+        $failures = 0;
+        $start = hrtime(true);
 
         foreach ($suiteConfig->getTestCases() as $testCaseClass) {
             $testCase = $this->testCaseFactory->create($testCaseClass);
 
+            $output->writeln('');
             $output->writeln($testCase->getName());
 
             foreach ($testCase->run() as $result) {
                 $output->writeln('  ' . $result->getOutput());
 
                 if ($result->isFailure()) {
-                    $exitCode = self::FAILURE;
+                    ++$failures;
+                } else {
+                    ++$successes;
                 }
             }
         }
 
+        $end = hrtime(true);
+
+        $summary = sprintf(
+            '%s! Ran %d tests in %ss',
+            $failures > 0 ? 'Fail' : 'Success',
+            $successes + $failures,
+            round(($end - $start) / 1e9, 2)
+        );
+
+        $output->writeln('');
+        $output->writeln($summary);
+
         // end TestRunner code
 
-        // TODO
-        // print suite results
+        if ($failures > 0) {
+            return self::FAILURE;
+        }
 
-        return $exitCode;
+        return self::SUCCESS;
     }
 }
