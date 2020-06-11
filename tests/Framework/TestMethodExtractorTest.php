@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Inphest\Framework\Tests;
+namespace Inphest\Tests\Framework;
 
 use Inphest\Framework\TestMethodExtractor;
 

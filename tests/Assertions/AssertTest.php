@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Inphest\Assertions\Tests;
+namespace Inphest\Tests\Assertions;
 
 use ArithmeticError;
 use Exception;
