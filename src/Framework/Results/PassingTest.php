@@ -13,9 +13,9 @@ final class PassingTest implements TestResultInterface
         $this->name = $name;
     }
 
-    public function getOutput(): string
+    public function getName(): string
     {
-        return '✔ ' . $this->name;
+        return $this->name;
     }
 
     public function isFailure(): bool

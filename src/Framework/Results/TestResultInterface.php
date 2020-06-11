@@ -6,7 +6,10 @@ namespace Inphest\Framework\Results;
 
 interface TestResultInterface
 {
-    public function getOutput(): string;
+    public function getName(): string;
 
+    /**
+     * @psalm-assert-if-true FailingTest $this
+     */
     public function isFailure(): bool;
 }

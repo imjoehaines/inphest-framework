@@ -17,9 +17,14 @@ final class FailingTest implements TestResultInterface
         $this->failure = $failure;
     }
 
-    public function getOutput(): string
+    public function getName(): string
     {
-        return '✘ ' . $this->name . ' — ' . $this->failure->getMessage();
+        return $this->name;
+    }
+
+    public function getFailure(): Throwable
+    {
+        return $this->failure;
     }
 
     public function isFailure(): bool

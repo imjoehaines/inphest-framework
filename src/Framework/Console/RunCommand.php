@@ -83,12 +83,13 @@ final class RunCommand extends Command
             $output->writeln($testCase->getName());
 
             foreach ($testCase->run() as $result) {
-                $output->writeln('  ' . $result->getOutput());
-
                 if ($result->isFailure()) {
                     ++$failures;
+                    $output->writeln('  ✘ ' . $result->getName());
+                    $output->writeln('      Fail! ' . $result->getFailure()->getMessage());
                 } else {
                     ++$successes;
+                    $output->writeln('  ✔ ' . $result->getName());
                 }
             }
         }
@@ -99,7 +100,7 @@ final class RunCommand extends Command
             '%s! Ran %d tests in %ss',
             $failures > 0 ? 'Fail' : 'Success',
             $successes + $failures,
-            round(($end - $start) / 1e9, 2)
+            round((float) ($end - $start) / 1e9, 2)
         );
 
         $output->writeln('');
