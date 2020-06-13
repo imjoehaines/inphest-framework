@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Inphest\Framework;
+namespace Inphest\Internal;
 
 use ReflectionClass;
 use ReflectionMethod;

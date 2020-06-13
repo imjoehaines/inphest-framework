@@ -2,7 +2,7 @@
 
 namespace Example;
 
-use Inphest\Framework\TestSuiteConfigInterface;
+use Inphest\TestSuiteConfigInterface;
 
 return new class implements TestSuiteConfigInterface {
     /**

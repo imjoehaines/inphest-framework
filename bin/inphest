@@ -1,11 +1,11 @@
 #!/usr/bin/env php
 <?php
 
-use Inphest\Assertions\Assert;
-use Inphest\Framework\Console\Io\Input;
-use Inphest\Framework\Console\Io\Output;
-use Inphest\Framework\Console\RunCommand;
-use Inphest\Framework\Factories\TestCaseFactory;
+use Inphest\Assert;
+use Inphest\Internal\Console\Io\Input;
+use Inphest\Internal\Console\Io\Output;
+use Inphest\Internal\Console\RunCommand;
+use Inphest\Internal\TestCaseRunnerFactory;
 
 $candidates = [
     __DIR__ . '/../vendor/autoload.php',
@@ -23,7 +23,7 @@ if (!class_exists(RunCommand::class)) {
 }
 
 $command = new RunCommand(
-    new TestCaseFactory(
+    new TestCaseRunnerFactory(
         new Assert()
     )
 );

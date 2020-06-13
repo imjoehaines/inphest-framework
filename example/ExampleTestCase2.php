@@ -2,7 +2,7 @@
 
 namespace Example;
 
-use Inphest\Assertions\Assert;
+use Inphest\Assert;
 use InvalidArgumentException;
 
 class ExampleTestCase2

@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Inphest\Framework;
+namespace Inphest\Internal;
 
 use Closure;
-use Inphest\Assertions\Assert;
-use Inphest\Assertions\AssertionException;
-use Inphest\Framework\Results\FailingTest;
-use Inphest\Framework\Results\PassingTest;
-use Inphest\Framework\Results\TestResultInterface;
+use Inphest\Assert;
+use Inphest\Internal\Result\FailingTest;
+use Inphest\Internal\Result\PassingTest;
+use Inphest\Internal\Result\TestResultInterface;
 
-final class TestCase implements TestCaseInterface
+final class TestCaseRunner
 {
     private object $instance;
 

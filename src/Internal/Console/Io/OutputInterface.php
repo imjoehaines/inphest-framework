@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Inphest\Framework\Console\Io;
+namespace Inphest\Internal\Console\Io;
 
 interface OutputInterface
 {

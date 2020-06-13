@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Inphest\Tests\Framework;
+namespace Inphest\Tests\Internal;
 
-use Inphest\Framework\TestMethodExtractor;
+use Inphest\Internal\TestMethodExtractor;
 
 use PHPUnit\Framework\TestCase;
 

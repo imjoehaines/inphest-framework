@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Inphest\Assertions;
+namespace Inphest;
 
+use Inphest\Internal\AssertionException;
 use Throwable;
 
 final class Assert

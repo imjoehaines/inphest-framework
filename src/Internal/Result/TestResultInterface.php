@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Inphest\Framework\Results;
+namespace Inphest\Internal\Result;
 
 interface TestResultInterface
 {

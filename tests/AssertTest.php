@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Inphest\Tests\Assertions;
+namespace Inphest\Tests;
 
 use ArithmeticError;
 use Exception;
-use Inphest\Assertions\Assert;
-use Inphest\Assertions\AssertionException;
+use Inphest\Assert;
+use Inphest\Internal\AssertionException;
 use InvalidArgumentException;
 
 use PHPUnit\Framework\TestCase;

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Inphest\Framework\Console;
+namespace Inphest\Internal\Console;
 
-use Inphest\Framework\Console\Io\InputInterface;
-use Inphest\Framework\Console\Io\OutputInterface;
-use Inphest\Framework\Factories\TestCaseFactory;
-use Inphest\Framework\TestSuiteConfigInterface;
+use Inphest\Internal\Console\Io\InputInterface;
+use Inphest\Internal\Console\Io\OutputInterface;
+use Inphest\Internal\TestCaseRunnerFactory;
+use Inphest\TestSuiteConfigInterface;
 use InvalidArgumentException;
 
 final class RunCommand
@@ -15,9 +15,9 @@ final class RunCommand
     private const SUCCESS = 0;
     private const FAILURE = 1;
 
-    private TestCaseFactory $testCaseFactory;
+    private TestCaseRunnerFactory $testCaseFactory;
 
-    public function __construct(TestCaseFactory $testCaseFactory)
+    public function __construct(TestCaseRunnerFactory $testCaseFactory)
     {
         $this->testCaseFactory = $testCaseFactory;
     }
