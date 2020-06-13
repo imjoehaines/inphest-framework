@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Inphest\Internal;
 
-use Closure;
 use Inphest\Assert;
 use Inphest\Internal\Result\FailingTest;
 use Inphest\Internal\Result\PassingTest;
@@ -42,16 +41,15 @@ final class TestCaseRunner
     public function run(): iterable
     {
         foreach ($this->testMethods as $name) {
-            $method = Closure::fromCallable([$this->instance, $name]);
-
-            yield $this->runMethod($name, $method);
+            yield $this->runMethod($name);
         }
     }
 
-    private function runMethod(string $testName, Closure $method): TestResultInterface
+    private function runMethod(string $testName): TestResultInterface
     {
         try {
-            $method($this->assert);
+            /** @psalm-suppress MixedMethodCall */
+            $this->instance->{$testName}($this->assert);
 
             return new PassingTest($testName);
         } catch (AssertionException $e) {
