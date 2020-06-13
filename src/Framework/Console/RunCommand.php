@@ -4,52 +4,32 @@ declare(strict_types=1);
 
 namespace Inphest\Framework\Console;
 
+use Inphest\Framework\Console\Io\InputInterface;
+use Inphest\Framework\Console\Io\OutputInterface;
 use Inphest\Framework\Factories\TestCaseFactory;
 use Inphest\Framework\TestSuiteConfigInterface;
 use InvalidArgumentException;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-
-final class RunCommand extends Command
+final class RunCommand
 {
+    private const SUCCESS = 0;
+    private const FAILURE = 1;
+
     private TestCaseFactory $testCaseFactory;
 
     public function __construct(TestCaseFactory $testCaseFactory)
     {
-        parent::__construct();
-
         $this->testCaseFactory = $testCaseFactory;
     }
 
-    protected function configure(): void
-    {
-        $this->setName('run')
-            ->addArgument(
-                'suite_config',
-                InputArgument::REQUIRED,
-                'Instance of TestSuiteConfigInterface containing configuration for the suite to run'
-            );
-    }
-
-    /**
-     * @throws InvalidArgumentException when config file doesn't exist
-     */
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $suiteConfigPath = $input->getArgument('suite_config');
+    public function run(
+        InputInterface $input,
+        OutputInterface $output
+    ): int {
+        $suiteConfigPath = $input->getArgument(1);
 
         if (!is_string($suiteConfigPath) || !file_exists($suiteConfigPath)) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'Unable to find a config file at "%s"',
-                    is_string($suiteConfigPath)
-                        ? $suiteConfigPath
-                        : var_export($suiteConfigPath, true)
-                )
-            );
+            throw new InvalidArgumentException('The given config file does not exist');
         }
 
         /**

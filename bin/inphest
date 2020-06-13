@@ -2,8 +2,8 @@
 <?php
 
 use Inphest\Assertions\Assert;
-use Symfony\Component\Console\Application;
-
+use Inphest\Framework\Console\Io\Input;
+use Inphest\Framework\Console\Io\Output;
 use Inphest\Framework\Console\RunCommand;
 use Inphest\Framework\Factories\TestCaseFactory;
 
@@ -22,10 +22,13 @@ if (!class_exists(RunCommand::class)) {
     die('Could not find `vendor/autoload.php`. You probably need to run `composer install`.');
 }
 
-$application = new Application('Inphest');
+$command = new RunCommand(
+    new TestCaseFactory(
+        new Assert()
+    )
+);
 
-$application->add(new RunCommand(
-    new TestCaseFactory(new Assert())
-));
-
-$application->run();
+$command->run(
+    new Input($argv),
+    new Output()
+);
