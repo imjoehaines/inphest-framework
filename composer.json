@@ -16,6 +16,7 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "Inphest\\MetaTests\\": "meta-tests/",
             "Inphest\\Tests\\": "tests/",
             "Example\\": "example/"
         }
@@ -33,8 +34,10 @@
         "test": [
             "@test:lint",
             "@test:psalm",
-            "@test:unit"
+            "@test:unit",
+            "@test:meta"
         ],
+        "test:meta": "./bin/inphest meta-tests/suite-config.php",
         "test:unit": "phpunit --testdox --colors=always",
         "test:lint": "ecs check --ansi",
         "test:psalm": "psalm"

@@ -1,6 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
-namespace Example;
+declare(strict_types=1);
+
+namespace Inphest\MetaTests;
 
 use Inphest\TestSuiteConfigInterface;
 
@@ -11,8 +13,7 @@ return new class() implements TestSuiteConfigInterface {
     public function getTestCases(): iterable
     {
         return [
-            ExampleTestCase::class,
-            ExampleTestCase2::class,
+            AssertTest::class,
         ];
     }
 };
