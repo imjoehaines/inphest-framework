@@ -6,6 +6,8 @@ namespace Inphest\Internal\Console;
 
 use Inphest\Internal\Console\Io\InputInterface;
 use Inphest\Internal\Console\Io\OutputInterface;
+use Inphest\Internal\Printer\PrettyPrinter;
+use Inphest\Internal\Printer\SimplePrinter;
 use Inphest\Internal\Stopwatch;
 use Inphest\Internal\TestCaseRunnerFactory;
 use Inphest\Internal\TestRunner;
@@ -56,7 +58,20 @@ final class RunCommand
             );
         }
 
-        $runner = new TestRunner($output, $this->testCaseFactory, new Stopwatch());
+        // TODO load this from config
+        $usePrettyPrinter = !!1;
+
+        $printer = $usePrettyPrinter
+            ? new PrettyPrinter($output)
+            : new SimplePrinter($output);
+
+        $runner = new TestRunner(
+            $output,
+            $this->testCaseFactory,
+            new Stopwatch(),
+            $printer
+        );
+
         $result = $runner->run($suiteConfig);
 
         if ($result->hasFailures()) {

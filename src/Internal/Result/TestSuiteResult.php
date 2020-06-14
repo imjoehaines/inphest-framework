@@ -34,4 +34,9 @@ final class TestSuiteResult
     {
         return $this->failures !== [];
     }
+
+    public function failures(): array
+    {
+        return $this->failures;
+    }
 }

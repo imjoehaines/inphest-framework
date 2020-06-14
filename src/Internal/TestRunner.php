@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Inphest\Internal;
 
 use Inphest\Internal\Console\Io\OutputInterface;
+use Inphest\Internal\Printer\PrinterInterface;
 use Inphest\Internal\Result\TestSuiteResult;
 use Inphest\TestSuiteConfigInterface;
 
@@ -13,15 +14,18 @@ final class TestRunner
     private OutputInterface $output;
     private TestCaseRunnerFactory $factory;
     private Stopwatch $stopwatch;
+    private PrinterInterface $printer;
 
     public function __construct(
         OutputInterface $output,
         TestCaseRunnerFactory $factory,
-        Stopwatch $stopwatch
+        Stopwatch $stopwatch,
+        PrinterInterface $printer
     ) {
         $this->output = $output;
         $this->factory = $factory;
         $this->stopwatch = $stopwatch;
+        $this->printer = $printer;
     }
 
     public function run(TestSuiteConfigInterface $config): TestSuiteResult
@@ -34,31 +38,21 @@ final class TestRunner
             foreach ($config->getTestCases() as $testCaseClass) {
                 $testCase = $this->factory->create($testCaseClass);
 
-                $this->output->writeln('');
-                $this->output->writeln($testCase->getName());
+                $this->printer->test($testCase);
 
                 foreach ($testCase->run() as $result) {
                     $results->add($result);
 
                     if ($result->isFailure()) {
-                        $this->output->writeln('  ✘ ' . $result->getName());
-                        $this->output->writeln('      Fail! ' . $result->getFailure()->getMessage());
+                        $this->printer->failure($result);
                     } else {
-                        $this->output->writeln('  ✔ ' . $result->getName());
+                        $this->printer->success($result);
                     }
                 }
             }
         });
 
-        $summary = sprintf(
-            'Ran %d tests in %s',
-            $results->count(),
-            TimeFormatter::format($timeTaken)
-        );
-
-        $this->output->writeln('');
-        $this->output->writeln($results->hasFailures() ? 'Fail!' : 'Success!');
-        $this->output->writeln($summary);
+        $this->printer->summary($timeTaken, $results);
 
         return $results;
     }

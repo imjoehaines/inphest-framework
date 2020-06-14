@@ -6,8 +6,13 @@ namespace Inphest\Internal\Console\Io;
 
 final class Output implements OutputInterface
 {
+    public function write(string $line): void
+    {
+        echo $line;
+    }
+
     public function writeln(string $line): void
     {
-        echo $line . "\n";
+        $this->write($line . "\n");
     }
 }
