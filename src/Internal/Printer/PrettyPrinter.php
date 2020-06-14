@@ -22,28 +22,37 @@ final class PrettyPrinter implements PrinterInterface
 
     public function test(TestCaseRunner $test): void
     {
-        $this->output->writeln("\n{$test->getName()}");
+        $name = $this->output->bold($test->getName());
+
+        $this->output->writeln("\n{$name}");
     }
 
     public function success(TestResultInterface $result): void
     {
-        $this->output->writeln("  ✔ {$result->getName()}");
+        $tick = $this->output->green('✔');
+
+        $this->output->writeln("  {$tick} {$result->getName()}");
     }
 
     public function failure(FailingTest $result): void
     {
+        $cross = $this->output->red('✘');
+        $name = $this->output->bold($result->getName());
+
         $this->output->writeln(
             <<<MESSAGE
-              ✘ {$result->getName()}
-                  Fail! {$result->getFailure()->getMessage()}
+              {$cross} {$name}
+                  {$result->getFailure()->getMessage()}
             MESSAGE
         );
     }
 
     public function summary(int $timeTaken, TestSuiteResult $result): void
     {
-        $successOrFail = $result->hasFailures() ? 'FAIL' : 'SUCCESS';
         $time = TimeFormatter::format($timeTaken);
+        $successOrFail = $result->hasFailures()
+            ? $this->output->bold($this->output->red('FAIL'))
+            : $this->output->bold($this->output->green('SUCCESS'));
 
         $this->output->writeln(
             <<<MESSAGE

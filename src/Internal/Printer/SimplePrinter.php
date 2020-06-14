@@ -26,21 +26,23 @@ final class SimplePrinter implements PrinterInterface
 
     public function success(TestResultInterface $result): void
     {
-        $this->output->write('✔');
+        $this->output->write($this->output->green('✔'));
     }
 
     public function failure(FailingTest $result): void
     {
-        $this->output->write('✘');
+        $this->output->write($this->output->red('✘'));
     }
 
     public function summary(int $timeTaken, TestSuiteResult $result): void
     {
+        $this->output->writeln();
+
         if ($result->hasFailures()) {
             $failures = $result->failures();
             $numberOfFailures = count($failures);
 
-            $this->output->writeln("\n\n{$numberOfFailures} failures:");
+            $this->output->writeln("\n{$numberOfFailures} failures:");
 
             /** @var FailingTest $failure */
             foreach ($failures as $failure) {
@@ -50,9 +52,10 @@ final class SimplePrinter implements PrinterInterface
             }
         }
 
-
-        $successOrFail = $result->hasFailures() ? 'FAIL' : 'SUCCESS';
         $time = TimeFormatter::format($timeTaken);
+        $successOrFail = $result->hasFailures()
+            ? $this->output->bold($this->output->red('FAIL'))
+            : $this->output->bold($this->output->green('SUCCESS'));
 
         $this->output->writeln("\n{$successOrFail} ({$time})");
     }
