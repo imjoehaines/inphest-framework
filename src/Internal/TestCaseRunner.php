@@ -40,20 +40,20 @@ final class TestCaseRunner
      */
     public function run(): iterable
     {
-        foreach ($this->testMethods as $name) {
-            yield $this->runMethod($name);
+        foreach ($this->testMethods as $method) {
+            yield $this->runMethod($method);
         }
     }
 
-    private function runMethod(string $testName): TestResultInterface
+    private function runMethod(string $method): TestResultInterface
     {
         try {
             /** @psalm-suppress MixedMethodCall */
-            $this->instance->{$testName}($this->assert);
+            $this->instance->{$method}($this->assert);
 
-            return new PassingTest($testName);
+            return new PassingTest($method);
         } catch (AssertionException $e) {
-            return new FailingTest($testName, $e);
+            return new FailingTest($method, $e);
         }
     }
 }
