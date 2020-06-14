@@ -14,6 +14,7 @@ return new class() implements TestSuiteConfigInterface {
     {
         return [
             AssertTest::class,
+            TimeFormatterTest::class,
         ];
     }
 };

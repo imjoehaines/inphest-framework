@@ -8,7 +8,7 @@ use Closure;
 
 final class Stopwatch
 {
-    public function measure(Closure $callback): float
+    public function measure(Closure $callback): int
     {
         $start = hrtime(true);
 
@@ -16,6 +16,6 @@ final class Stopwatch
 
         $end = hrtime(true);
 
-        return round((float) ($end - $start) / 1e9, 2);
+        return $end - $start;
     }
 }

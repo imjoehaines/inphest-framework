@@ -51,13 +51,13 @@ final class TestRunner
         });
 
         $summary = sprintf(
-            '%s! Ran %d tests in %ss',
-            $results->hasFailures() ? 'Fail' : 'Success',
+            'Ran %d tests in %s',
             $results->count(),
-            $timeTaken
+            TimeFormatter::format($timeTaken)
         );
 
         $this->output->writeln('');
+        $this->output->writeln($results->hasFailures() ? 'Fail!' : 'Success!');
         $this->output->writeln($summary);
 
         return $results;
