@@ -28,8 +28,16 @@ final class RunCommand
     ): int {
         $suiteConfigPath = $input->getArgument(1);
 
-        if (!is_string($suiteConfigPath) || !file_exists($suiteConfigPath)) {
-            throw new InvalidArgumentException('The given config file does not exist');
+        if (!is_string($suiteConfigPath)) {
+            throw new InvalidArgumentException('No suite config file given');
+        }
+
+        $suiteConfigPath = getcwd() . "/{$suiteConfigPath}";
+
+        if (!file_exists($suiteConfigPath)) {
+            throw new InvalidArgumentException(
+                "The given config file '{$suiteConfigPath}' does not exist"
+            );
         }
 
         /**
