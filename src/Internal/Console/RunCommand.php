@@ -6,7 +6,9 @@ namespace Inphest\Internal\Console;
 
 use Inphest\Internal\Console\Io\InputInterface;
 use Inphest\Internal\Console\Io\OutputInterface;
+use Inphest\Internal\Stopwatch;
 use Inphest\Internal\TestCaseRunnerFactory;
+use Inphest\Internal\TestRunner;
 use Inphest\TestSuiteConfigInterface;
 use InvalidArgumentException;
 
@@ -54,47 +56,10 @@ final class RunCommand
             );
         }
 
-        // TODO: move this logic to a TestRunner
+        $runner = new TestRunner($output, $this->testCaseFactory, new Stopwatch());
+        $result = $runner->run($suiteConfig);
 
-        $output->writeln('Inphest v0.0.0');
-
-        $successes = 0;
-        $failures = 0;
-        $start = hrtime(true);
-
-        foreach ($suiteConfig->getTestCases() as $testCaseClass) {
-            $testCase = $this->testCaseFactory->create($testCaseClass);
-
-            $output->writeln('');
-            $output->writeln($testCase->getName());
-
-            foreach ($testCase->run() as $result) {
-                if ($result->isFailure()) {
-                    ++$failures;
-                    $output->writeln('  ✘ ' . $result->getName());
-                    $output->writeln('      Fail! ' . $result->getFailure()->getMessage());
-                } else {
-                    ++$successes;
-                    $output->writeln('  ✔ ' . $result->getName());
-                }
-            }
-        }
-
-        $end = hrtime(true);
-
-        $summary = sprintf(
-            '%s! Ran %d tests in %ss',
-            $failures > 0 ? 'Fail' : 'Success',
-            $successes + $failures,
-            round((float) ($end - $start) / 1e9, 2)
-        );
-
-        $output->writeln('');
-        $output->writeln($summary);
-
-        // end TestRunner code
-
-        if ($failures > 0) {
+        if ($result->hasFailures()) {
             return self::FAILURE;
         }
 
