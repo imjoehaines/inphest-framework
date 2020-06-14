@@ -28,7 +28,4 @@ $command = new RunCommand(
     )
 );
 
-$command->run(
-    new Input($argv),
-    new Output()
-);
+exit($command->run(new Input($argv), new Output()));
