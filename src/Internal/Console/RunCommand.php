@@ -22,10 +22,8 @@ final class RunCommand
         $this->testCaseFactory = $testCaseFactory;
     }
 
-    public function run(
-        InputInterface $input,
-        OutputInterface $output
-    ): int {
+    public function run(InputInterface $input, OutputInterface $output): int
+    {
         $suiteConfigPath = $input->getArgument(1);
 
         if (!is_string($suiteConfigPath)) {
