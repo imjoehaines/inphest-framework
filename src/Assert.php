@@ -22,8 +22,11 @@ final class Assert
         if ($expected !== $actual) {
             throw new AssertionException(sprintf(
                 '%s is not the same as %s',
-                json_encode($expected, JSON_THROW_ON_ERROR),
-                json_encode($actual, JSON_THROW_ON_ERROR)
+                // TODO this is not good serialisation! We need to robustly print
+                //      any arbitrary values. Ideally we would then be able to diff
+                //      them, but that would be separate to this message
+                json_encode($expected, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE),
+                json_encode($actual, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE)
             ));
         }
     }
