@@ -48,7 +48,7 @@ final class TestCase implements PublicTestCase
         }
 
         foreach ($this->data as $index => $data) {
-            $label = "{$this->label} #{$index}";
+            $label = "{$this->label} ({$index})";
 
             yield $this->runOne($assert, $label, $data);
         }
