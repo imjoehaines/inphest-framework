@@ -13,7 +13,7 @@ final class Output implements OutputInterface
 
     public function writeln(string $line = ''): void
     {
-        $this->write($line . "\n");
+        $this->write("{$line}\n");
     }
 
     public function bold(string $value): string
