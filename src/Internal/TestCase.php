@@ -21,11 +21,6 @@ final class TestCase
         $this->test = $test;
     }
 
-    public function getLabel(): string
-    {
-        return $this->label;
-    }
-
     public function run(Assert $assert): TestResultInterface
     {
         try {

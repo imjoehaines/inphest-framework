@@ -27,16 +27,18 @@ final class TestRunner
         $assert = new Assert();
 
         $timeTaken = $this->stopwatch->measure(function () use ($results, $assert): void {
-            foreach (TestRegistry::iterate() as $testCase) {
-                $this->printer->test($testCase);
+            foreach (TestRegistry::iterate() as $file => $tests) {
+                $this->printer->heading($file);
 
-                $result = $testCase->run($assert);
-                $results->add($result);
+                foreach ($tests as $test) {
+                    $result = $test->run($assert);
+                    $results->add($result);
 
-                if ($result->isFailure()) {
-                    $this->printer->failure($result);
-                } else {
-                    $this->printer->success($result);
+                    if ($result->isFailure()) {
+                        $this->printer->failure($result);
+                    } else {
+                        $this->printer->success($result);
+                    }
                 }
             }
         });

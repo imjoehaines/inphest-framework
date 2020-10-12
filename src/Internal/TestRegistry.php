@@ -9,20 +9,30 @@ use Closure;
 final class TestRegistry
 {
     /**
-     * @var list<TestCase>
+     * @var array<string, list<TestCase>>
      */
     private static array $tests = [];
+    private static string $file;
 
     public static function register(string $label, Closure $test): void
     {
-        self::$tests[] = new TestCase($label, $test);
+        if (!isset(self::$tests[self::$file])) {
+            self::$tests[self::$file] = [];
+        }
+
+        self::$tests[self::$file][] = new TestCase($label, $test);
     }
 
     /**
-     * @return iterable<int, TestCase>
+     * @return iterable<string, list<TestCase>>
      */
     public static function iterate(): iterable
     {
         yield from self::$tests;
+    }
+
+    public static function setFile(string $file): void
+    {
+        self::$file = $file;
     }
 }

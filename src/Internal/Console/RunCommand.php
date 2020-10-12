@@ -10,6 +10,7 @@ use Inphest\Internal\Console\Io\OutputInterface;
 use Inphest\Internal\Printer\PrettyPrinter;
 use Inphest\Internal\Printer\SimplePrinter;
 use Inphest\Internal\Stopwatch;
+use Inphest\Internal\TestRegistry;
 use Inphest\Internal\TestRunner;
 use InvalidArgumentException;
 use RecursiveDirectoryIterator;
@@ -44,6 +45,11 @@ final class RunCommand
 
         /** @var string $file */
         foreach ($iterator as $file) {
+            // Convert the absolute path to be relative from $path
+            $relativePath = substr($file, strlen("{$path}/"));
+
+            TestRegistry::setFile(basename($relativePath, '.php'));
+
             /** @psalm-suppress UnresolvableInclude */
             require $file;
         }

@@ -8,7 +8,6 @@ use Inphest\Internal\Console\Io\OutputInterface;
 use Inphest\Internal\Result\FailingTest;
 use Inphest\Internal\Result\TestResultInterface;
 use Inphest\Internal\Result\TestSuiteResult;
-use Inphest\Internal\TestCase;
 use Inphest\Internal\TimeFormatter;
 
 final class PrettyPrinter implements PrinterInterface
@@ -20,9 +19,9 @@ final class PrettyPrinter implements PrinterInterface
         $this->output = $output;
     }
 
-    public function test(TestCase $test): void
+    public function heading(string $heading): void
     {
-        $name = $this->output->bold($test->getLabel());
+        $name = $this->output->bold($heading);
 
         $this->output->writeln("\n{$name}");
     }
