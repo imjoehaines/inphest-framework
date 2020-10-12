@@ -12,7 +12,8 @@
     "autoload": {
         "psr-4": {
             "Inphest\\": "src/"
-        }
+        },
+        "files": ["src/test.php"]
     },
     "autoload-dev": {
         "psr-4": {
@@ -37,7 +38,7 @@
             "@test:unit",
             "@test:meta"
         ],
-        "test:meta": "./bin/inphest meta-tests/suite-config.php",
+        "test:meta": "./bin/inphest meta-tests",
         "test:unit": "phpunit --testdox --colors=always",
         "test:lint": "ecs check --ansi",
         "test:psalm": "psalm"

@@ -8,7 +8,7 @@ use Inphest\Internal\Console\Io\OutputInterface;
 use Inphest\Internal\Result\FailingTest;
 use Inphest\Internal\Result\TestResultInterface;
 use Inphest\Internal\Result\TestSuiteResult;
-use Inphest\Internal\TestCaseRunner;
+use Inphest\Internal\TestCase;
 use Inphest\Internal\TimeFormatter;
 
 final class PrettyPrinter implements PrinterInterface
@@ -20,9 +20,9 @@ final class PrettyPrinter implements PrinterInterface
         $this->output = $output;
     }
 
-    public function test(TestCaseRunner $test): void
+    public function test(TestCase $test): void
     {
-        $name = $this->output->bold($test->getName());
+        $name = $this->output->bold($test->getLabel());
 
         $this->output->writeln("\n{$name}");
     }
@@ -30,7 +30,7 @@ final class PrettyPrinter implements PrinterInterface
     public function success(TestResultInterface $result): void
     {
         $tick = $this->output->green('✔');
-        $name = $this->prettifyMethodName($result->getName());
+        $name = $result->getLabel();
 
         $this->output->writeln("  {$tick} {$name}");
     }
@@ -38,12 +38,12 @@ final class PrettyPrinter implements PrinterInterface
     public function failure(FailingTest $result): void
     {
         $cross = $this->output->red('✘');
-        $name = $this->output->bold($this->prettifyMethodName($result->getName()));
+        $name = $this->output->bold($result->getLabel());
 
         $this->output->writeln(
             <<<MESSAGE
               {$cross} {$name}
-                  {$result->getFailure()->getMessage()}
+                  {$result->getFailureReason()->getMessage()}
             MESSAGE
         );
     }
@@ -62,38 +62,5 @@ final class PrettyPrinter implements PrinterInterface
             Ran {$result->count()} tests in {$time}
             MESSAGE
         );
-    }
-
-    private function prettifyMethodName(string $method): string
-    {
-        $testName = '';
-        $inNumber = false;
-
-        // Skip the first 4 characters as we know they are 'test'
-        for ($i = 4; $i < strlen($method); ++$i) {
-            $character = $method[$i];
-            $asciiCode = ord($character);
-
-            if ($i !== 4 && $asciiCode >= 65 && $asciiCode <= 90) {
-                // If the character is uppercase ASCII and not the first
-                // character, add a space before it and lowercase it
-                $testName .= ' ' . chr($asciiCode + 32);
-                $inNumber = false;
-            } elseif ($asciiCode >= 48 && $asciiCode <= 57) {
-                // If the character is a number, add a space before the first
-                // number in this set of numbers (i.e. before '1' in '123')
-                if (!$inNumber) {
-                    $testName .= ' ';
-                }
-
-                $testName .= $character;
-                $inNumber = true;
-            } else {
-                $testName .= $character;
-                $inNumber = false;
-            }
-        }
-
-        return $testName;
     }
 }

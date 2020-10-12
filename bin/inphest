@@ -22,10 +22,6 @@ if (!class_exists(RunCommand::class)) {
     die('Could not find `vendor/autoload.php`. You probably need to run `composer install`.');
 }
 
-$command = new RunCommand(
-    new TestCaseRunnerFactory(
-        new Assert()
-    )
-);
+$command = new RunCommand();
 
 exit($command->run(new Input($argv), new Output()));

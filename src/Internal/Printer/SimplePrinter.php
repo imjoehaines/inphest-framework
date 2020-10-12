@@ -8,7 +8,7 @@ use Inphest\Internal\Console\Io\OutputInterface;
 use Inphest\Internal\Result\FailingTest;
 use Inphest\Internal\Result\TestResultInterface;
 use Inphest\Internal\Result\TestSuiteResult;
-use Inphest\Internal\TestCaseRunner;
+use Inphest\Internal\TestCase;
 use Inphest\Internal\TimeFormatter;
 
 final class SimplePrinter implements PrinterInterface
@@ -20,7 +20,7 @@ final class SimplePrinter implements PrinterInterface
         $this->output = $output;
     }
 
-    public function test(TestCaseRunner $test): void
+    public function test(TestCase $test): void
     {
     }
 
@@ -47,7 +47,7 @@ final class SimplePrinter implements PrinterInterface
             /** @var FailingTest $failure */
             foreach ($failures as $failure) {
                 $this->output->writeln(
-                    "  {$failure->getName()} — {$failure->getFailure()->getMessage()}"
+                    "  {$failure->getLabel()} — {$failure->getFailureReason()->getMessage()}"
                 );
             }
         }

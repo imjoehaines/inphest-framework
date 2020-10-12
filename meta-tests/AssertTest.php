@@ -6,51 +6,47 @@ namespace Inphest\MetaTests;
 
 use Exception;
 use Inphest\Assert;
+use function Inphest\test;
 use TypeError;
 
-final class AssertTest
-{
-    public function testOneIsOne(Assert $assert): void
-    {
-        $assert->same(1, 1);
-    }
+test('one is one', function (Assert $assert): void {
+    $assert->same(1, 1);
+    $assert(1 === 1);
+});
 
-    public function testAbcIsAbc(Assert $assert): void
-    {
-        $assert->same('abc', 'abc');
-    }
+test('abc is abc', function (Assert $assert): void {
+    $assert->same('abc', 'abc');
+    $assert('abc' === 'abc');
+});
 
-    public function testEmptyArrayIsEmptyArray(Assert $assert): void
-    {
-        $assert->same([], []);
-    }
+test('empty array is empty array', function (Assert $assert): void {
+    $assert->same([], []);
+    $assert([] === []);
+});
 
-    public function testTrueIsTrue(Assert $assert): void
-    {
-        $assert->same(true, true);
-    }
+test('true is true', function (Assert $assert): void {
+    $assert->same(true, true);
+    $assert(true === true);
+});
 
-    public function testFalseIsFalse(Assert $assert): void
-    {
-        $assert->same(false, false);
-    }
+test('false is false', function (Assert $assert): void {
+    $assert->same(false, false);
+    $assert(false === false);
+});
 
-    public function testThisIsThis(Assert $assert): void
-    {
-        $assert->same($this, $this);
-    }
+test('this is this', function (Assert $assert): void {
+    $assert->same($this, $this);
+    $assert($this === $this);
+});
 
-    public function testThrowsWithException(Assert $assert): void
-    {
-        $assert->throws(function (): void {
-            throw new Exception('oh no');
-        }, new Exception('oh no'));
-    }
+test('throws (with exception)', function (Assert $assert): void {
+    $assert->throws(function (): void {
+        throw new Exception('oh no');
+    }, new Exception('oh no'));
+});
 
-    public function testThrowsWithTypeError(Assert $assert): void
-    {
-        $assert->throws(function (): void {
-            throw new TypeError('bad');
-        }, new TypeError('bad'));
-    }
-}
+test('throws (with error)', function (Assert $assert): void {
+    $assert->throws(function (): void {
+        throw new TypeError('bad');
+    }, new TypeError('bad'));
+});

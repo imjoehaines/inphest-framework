@@ -10,6 +10,24 @@ use Throwable;
 final class Assert
 {
     /**
+     * Assert that $condition is true
+     *
+     * @param bool $condition
+     *
+     * @throws AssertionException when $condition is not true
+     */
+    public function __invoke(bool $condition): void
+    {
+        if ($condition === false) {
+            // TODO an optional message would be useful; including the actual
+            //      assertion here would be even better
+            //      if this was sufficiently smart, we wouldn't need any other
+            //      assertions except for 'throws'
+            throw new AssertionException('Assertion failed!');
+        }
+    }
+
+    /**
      * Assert that $actual is the same as (===) $expected
      *
      * @param mixed $expected
@@ -59,7 +77,7 @@ final class Assert
 
             if ($expected->getCode() !== $e->getCode()) {
                 throw new AssertionException(sprintf(
-                    '"%d" does not match expected message "%d"',
+                    '"%d" does not match expected code "%d"',
                     $e->getCode(),
                     $expected->getCode()
                 ));

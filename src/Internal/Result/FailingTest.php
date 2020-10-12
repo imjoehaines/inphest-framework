@@ -8,23 +8,23 @@ use Throwable;
 
 final class FailingTest implements TestResultInterface
 {
-    private string $name;
-    private Throwable $failure;
+    private string $label;
+    private Throwable $failureReason;
 
-    public function __construct(string $name, Throwable $failure)
+    public function __construct(string $label, Throwable $failureReason)
     {
-        $this->name = $name;
-        $this->failure = $failure;
+        $this->label = $label;
+        $this->failureReason = $failureReason;
     }
 
-    public function getName(): string
+    public function getLabel(): string
     {
-        return $this->name;
+        return $this->label;
     }
 
-    public function getFailure(): Throwable
+    public function getFailureReason(): Throwable
     {
-        return $this->failure;
+        return $this->failureReason;
     }
 
     public function isFailure(): bool

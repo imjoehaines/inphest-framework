@@ -6,16 +6,16 @@ namespace Inphest\Internal\Result;
 
 final class PassingTest implements TestResultInterface
 {
-    private string $name;
+    private string $label;
 
-    public function __construct(string $name)
+    public function __construct(string $label)
     {
-        $this->name = $name;
+        $this->label = $label;
     }
 
-    public function getName(): string
+    public function getLabel(): string
     {
-        return $this->name;
+        return $this->label;
     }
 
     public function isFailure(): bool
