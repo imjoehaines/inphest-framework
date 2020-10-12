@@ -25,11 +25,14 @@ final class RunCommand
     {
         $path = $input->getArgument(1);
 
-        if (!is_string($path)) {
+        if (!is_string($path) || $path === '') {
             $path = 'tests';
         }
 
-        $path = getcwd() . "/{$path}";
+        // Make the path absolute if it's not already
+        if ($path[0] !== '/') {
+            $path = getcwd() . "/{$path}";
+        }
 
         if (!file_exists($path) || !is_dir($path)) {
             throw new InvalidArgumentException(
@@ -47,7 +50,7 @@ final class RunCommand
         /** @var string $file */
         foreach ($iterator as $file) {
             // Convert the absolute path to be relative from $path
-            $relativePath = substr($file, strlen("{$path}/"));
+            $relativePath = substr($file, strlen($path));
 
             TestRegistry::setFile(basename($relativePath, '.php'));
 
