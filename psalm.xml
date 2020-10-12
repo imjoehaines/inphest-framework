@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <psalm
-    errorLevel="1"
-    strictBinaryOperands="true"
-    resolveFromConfigFile="true"
-    findUnusedVariablesAndParams="true"
-    findUnusedCode="true"
-    ensureArrayStringOffsetsExist="true"
-    skipChecksOnUnresolvableIncludes="false"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    errorLevel="1"
+    ensureArrayStringOffsetsExist="true"
+    findUnusedCode="true"
+    findUnusedVariablesAndParams="true"
+    sealAllMethods="true"
+    skipChecksOnUnresolvableIncludes="false"
+    strictBinaryOperands="true"
 >
     <projectFiles>
         <!-- Explicitly include "bin/inphest" as Psalm won't by default -->
