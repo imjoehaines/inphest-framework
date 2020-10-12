@@ -33,7 +33,7 @@ final class SimplePrinter implements PrinterInterface
         $this->output->write($this->output->red('✘'));
     }
 
-    public function summary(int $timeTaken, TestSuiteResult $result): void
+    public function summary(TestSuiteResult $result): void
     {
         $this->output->writeln();
 
@@ -51,7 +51,7 @@ final class SimplePrinter implements PrinterInterface
             }
         }
 
-        $time = TimeFormatter::format($timeTaken);
+        $time = TimeFormatter::format($result->getTimeTaken());
         $successOrFail = $result->hasFailures()
             ? $this->output->bold($this->output->red('FAIL'))
             : $this->output->bold($this->output->green('SUCCESS'));

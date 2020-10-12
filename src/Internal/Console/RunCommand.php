@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Inphest\Internal\Console;
 
 use FilesystemIterator;
+use Inphest\Assert;
 use Inphest\Internal\Console\Io\InputInterface;
 use Inphest\Internal\Console\Io\OutputInterface;
 use Inphest\Internal\Printer\PrettyPrinter;
@@ -61,9 +62,10 @@ final class RunCommand
             ? new PrettyPrinter($output)
             : new SimplePrinter($output);
 
-        $runner = new TestRunner(new Stopwatch(), $printer);
+        $runner = new TestRunner($printer, new Assert());
+        $result = $runner->run(new Stopwatch());
 
-        $result = $runner->run();
+        $printer->summary($result);
 
         if ($result->hasFailures()) {
             return self::FAILURE;

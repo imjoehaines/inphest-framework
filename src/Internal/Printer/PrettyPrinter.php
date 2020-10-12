@@ -47,9 +47,9 @@ final class PrettyPrinter implements PrinterInterface
         );
     }
 
-    public function summary(int $timeTaken, TestSuiteResult $result): void
+    public function summary(TestSuiteResult $result): void
     {
-        $time = TimeFormatter::format($timeTaken);
+        $time = TimeFormatter::format($result->getTimeTaken());
         $successOrFail = $result->hasFailures()
             ? $this->output->bold($this->output->red('FAIL'))
             : $this->output->bold($this->output->green('SUCCESS'));

@@ -4,35 +4,31 @@ declare(strict_types=1);
 
 namespace Inphest\Internal;
 
+use Closure;
 use Inphest\Assert;
 use Inphest\Internal\Printer\PrinterInterface;
 use Inphest\Internal\Result\TestSuiteResult;
 
 final class TestRunner
 {
-    private Stopwatch $stopwatch;
     private PrinterInterface $printer;
+    private Assert $assert;
 
-    public function __construct(
-        Stopwatch $stopwatch,
-        PrinterInterface $printer
-    ) {
-        $this->stopwatch = $stopwatch;
+    public function __construct(PrinterInterface $printer, Assert $assert)
+    {
         $this->printer = $printer;
+        $this->assert = $assert;
     }
 
-    public function run(): TestSuiteResult
+    public function run(Stopwatch $stopwatch): TestSuiteResult
     {
-        $results = new TestSuiteResult();
-        $assert = new Assert();
-
-        $timeTaken = $this->stopwatch->measure(function () use ($results, $assert): void {
+        return TestSuiteResult::create($stopwatch, function (Closure $addResult): void {
             foreach (TestRegistry::iterate() as $file => $tests) {
                 $this->printer->heading($file);
 
                 foreach ($tests as $test) {
-                    $result = $test->run($assert);
-                    $results->add($result);
+                    $result = $test->run($this->assert);
+                    $addResult($result);
 
                     if ($result->isFailure()) {
                         $this->printer->failure($result);
@@ -42,9 +38,5 @@ final class TestRunner
                 }
             }
         });
-
-        $this->printer->summary($timeTaken, $results);
-
-        return $results;
     }
 }

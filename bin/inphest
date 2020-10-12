@@ -17,9 +17,12 @@ foreach ($candidates as $candidate) {
 }
 
 if (!class_exists(RunCommand::class)) {
-    die('Could not find `vendor/autoload.php`. You probably need to run `composer install`.');
+    echo "Could not find `vendor/autoload.php`. You probably need to run `composer install`.\n";
+
+    exit(2);
 }
 
 $command = new RunCommand();
+$exitCode = $command->run(new Input($argv), new Output());
 
-exit($command->run(new Input($argv), new Output()));
+exit($exitCode);
