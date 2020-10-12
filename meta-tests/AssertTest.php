@@ -9,35 +9,22 @@ use Inphest\Assert;
 use function Inphest\test;
 use TypeError;
 
-test('one is one', function (Assert $assert): void {
-    $assert->same(1, 1);
-    $assert(1 === 1);
-});
+$sameData = [
+    '1 === 1' => [1, 1],
+    'abc === abc' => ['abc', 'abc'],
+    '[] === []' => [[], []],
+    'true === true' => [true, true],
+    'false === false' => [false, false],
+    '$this === $this' => [$this, $this],
+];
 
-test('abc is abc', function (Assert $assert): void {
-    $assert->same('abc', 'abc');
-    $assert('abc' === 'abc');
-});
+test('`same` works correctly', static function (Assert $assert, $expected, $actual): void {
+    $assert->same($expected, $actual);
+})->with($sameData);
 
-test('empty array is empty array', function (Assert $assert): void {
-    $assert->same([], []);
-    $assert([] === []);
-});
-
-test('true is true', function (Assert $assert): void {
-    $assert->same(true, true);
-    $assert(true === true);
-});
-
-test('false is false', function (Assert $assert): void {
-    $assert->same(false, false);
-    $assert(false === false);
-});
-
-test('this is this', function (Assert $assert): void {
-    $assert->same($this, $this);
-    $assert($this === $this);
-});
+test('invoke works correctly', function (Assert $assert, $expected, $actual): void {
+    $assert($expected === $actual);
+})->with($sameData);
 
 test('throws (with exception)', function (Assert $assert): void {
     $assert->throws(function (): void {
