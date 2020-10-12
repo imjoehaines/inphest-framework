@@ -59,6 +59,19 @@ final class RunCommand
             require $file;
         }
 
+        // Fail if we didn't find any tests to run
+        if (TestRegistry::isEmpty()) {
+            $output->writeln(<<<MESSAGE
+
+            No tests found in directory:
+            {$path}
+
+            {$output->bold($output->red('FAIL'))}
+            MESSAGE);
+
+            return self::FAILURE;
+        }
+
         // TODO load this from config
         $usePrettyPrinter = !!1;
 

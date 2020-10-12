@@ -35,4 +35,9 @@ final class TestRegistry
     {
         self::$file = $file;
     }
+
+    public static function isEmpty(): bool
+    {
+        return self::$tests === [];
+    }
 }
