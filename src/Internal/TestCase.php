@@ -21,6 +21,10 @@ final class TestCase implements PublicTestCase
      */
     private array $data = [];
 
+    /**
+     * @param string $label
+     * @param Closure(Assert, mixed...): void $test
+     */
     public function __construct(string $label, Closure $test)
     {
         $this->label = $label;

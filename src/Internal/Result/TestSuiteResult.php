@@ -25,9 +25,15 @@ final class TestSuiteResult
     {
     }
 
-    public static function create(Stopwatch $stopwatch, Closure $runTests): self
+    /**
+     * @param Stopwatch $stopwatch
+     * @param Closure(Closure(TestResultInterface): void): void $runTests
+     *
+     * @return TestSuiteResult
+     */
+    public static function create(Stopwatch $stopwatch, Closure $runTests): TestSuiteResult
     {
-        $suiteResult = new self();
+        $suiteResult = new TestSuiteResult();
 
         $addResult = static function (TestResultInterface $testResult) use ($suiteResult): void {
             if ($testResult->isFailure()) {

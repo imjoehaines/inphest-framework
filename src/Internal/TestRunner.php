@@ -7,6 +7,7 @@ namespace Inphest\Internal;
 use Closure;
 use Inphest\Assert;
 use Inphest\Internal\Printer\PrinterInterface;
+use Inphest\Internal\Result\TestResultInterface;
 use Inphest\Internal\Result\TestSuiteResult;
 
 final class TestRunner
@@ -22,7 +23,10 @@ final class TestRunner
 
     public function run(Stopwatch $stopwatch): TestSuiteResult
     {
-        return TestSuiteResult::create($stopwatch, function (Closure $addResult): void {
+        /**
+         * @param Closure(TestResultInterface): void $addResult
+        */
+        $runTests = function (Closure $addResult): void {
             foreach (TestRegistry::iterate() as $file => $tests) {
                 $this->printer->heading($file);
 
@@ -38,6 +42,8 @@ final class TestRunner
                     }
                 }
             }
-        });
+        };
+
+        return TestSuiteResult::create($stopwatch, $runTests);
     }
 }

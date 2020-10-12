@@ -15,16 +15,29 @@ $sameData = [
     '[] === []' => [[], []],
     'true === true' => [true, true],
     'false === false' => [false, false],
-    '$this === $this' => [$this, $this],
 ];
 
-test('`same` works correctly', static function (Assert $assert, $expected, $actual): void {
-    $assert->same($expected, $actual);
-})->with($sameData);
+test(
+    '`same` works correctly',
+    /**
+     * @param mixed $expected
+     * @param mixed $actual
+     */
+    static function (Assert $assert, $expected, $actual): void {
+        $assert->same($expected, $actual);
+    }
+)->with($sameData);
 
-test('invoke works correctly', static function (Assert $assert, $expected, $actual): void {
-    $assert($expected === $actual);
-})->with($sameData);
+test(
+    'invoke works correctly',
+    /**
+     * @param mixed $expected
+     * @param mixed $actual
+     */
+    static function (Assert $assert, $expected, $actual): void {
+        $assert($expected === $actual);
+    }
+)->with($sameData);
 
 test('throws (with exception)', static function (Assert $assert): void {
     $assert->throws(static function (): void {

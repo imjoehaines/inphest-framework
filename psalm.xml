@@ -16,6 +16,7 @@
         <file name="bin/inphest" />
 
         <directory name="bin" />
+        <directory name="meta-tests" />
         <directory name="src" />
         <directory name="tests" />
 
