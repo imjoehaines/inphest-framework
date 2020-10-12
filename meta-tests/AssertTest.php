@@ -22,18 +22,18 @@ test('`same` works correctly', static function (Assert $assert, $expected, $actu
     $assert->same($expected, $actual);
 })->with($sameData);
 
-test('invoke works correctly', function (Assert $assert, $expected, $actual): void {
+test('invoke works correctly', static function (Assert $assert, $expected, $actual): void {
     $assert($expected === $actual);
 })->with($sameData);
 
-test('throws (with exception)', function (Assert $assert): void {
-    $assert->throws(function (): void {
+test('throws (with exception)', static function (Assert $assert): void {
+    $assert->throws(static function (): void {
         throw new Exception('oh no');
     }, new Exception('oh no'));
 });
 
-test('throws (with error)', function (Assert $assert): void {
-    $assert->throws(function (): void {
+test('throws (with error)', static function (Assert $assert): void {
+    $assert->throws(static function (): void {
         throw new TypeError('bad');
     }, new TypeError('bad'));
 });
