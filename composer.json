@@ -13,7 +13,7 @@
         "psr-4": {
             "Inphest\\": "src/"
         },
-        "files": ["src/test.php"]
+        "files": ["src/test.php", "src/version.php"]
     },
     "autoload-dev": {
         "psr-4": {

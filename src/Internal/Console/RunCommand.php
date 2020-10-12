@@ -40,7 +40,8 @@ final class RunCommand
             );
         }
 
-        $output->writeln('Inphest v0.0.0');
+        $version = \Inphest\VERSION;
+        $output->writeln("Inphest v{$version}");
 
         $iterator = new RecursiveDirectoryIterator(
             $path,
