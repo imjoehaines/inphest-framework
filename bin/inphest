@@ -1,11 +1,9 @@
 #!/usr/bin/env php
 <?php
 
-use Inphest\Assert;
 use Inphest\Internal\Console\Io\Input;
 use Inphest\Internal\Console\Io\Output;
 use Inphest\Internal\Console\RunCommand;
-use Inphest\Internal\TestCaseRunnerFactory;
 
 $candidates = [
     __DIR__ . '/../vendor/autoload.php',
