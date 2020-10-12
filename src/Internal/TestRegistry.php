@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Inphest\Internal;
 
 use Closure;
+use Inphest\PublicTestCase;
 
 final class TestRegistry
 {
@@ -14,13 +15,17 @@ final class TestRegistry
     private static array $tests = [];
     private static string $file;
 
-    public static function register(string $label, Closure $test): void
+    public static function register(string $label, Closure $test): PublicTestCase
     {
         if (!isset(self::$tests[self::$file])) {
             self::$tests[self::$file] = [];
         }
 
-        self::$tests[self::$file][] = new TestCase($label, $test);
+        $testCase = new TestCase($label, $test);
+
+        self::$tests[self::$file][] = $testCase;
+
+        return $testCase;
     }
 
     /**

@@ -7,7 +7,7 @@ namespace Inphest;
 use Closure;
 use Inphest\Internal\TestRegistry;
 
-function test(string $label, Closure $test): void
+function test(string $label, Closure $test): PublicTestCase
 {
-    TestRegistry::register($label, $test);
+    return TestRegistry::register($label, $test);
 }

@@ -27,13 +27,14 @@ final class TestRunner
                 $this->printer->heading($file);
 
                 foreach ($tests as $test) {
-                    $result = $test->run($this->assert);
-                    $addResult($result);
+                    foreach ($test->run($this->assert) as $result) {
+                        $addResult($result);
 
-                    if ($result->isFailure()) {
-                        $this->printer->failure($result);
-                    } else {
-                        $this->printer->success($result);
+                        if ($result->isFailure()) {
+                            $this->printer->failure($result);
+                        } else {
+                            $this->printer->success($result);
+                        }
                     }
                 }
             }
