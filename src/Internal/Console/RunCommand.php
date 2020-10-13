@@ -8,8 +8,7 @@ use FilesystemIterator;
 use Inphest\Assert;
 use Inphest\Internal\Console\Io\InputInterface;
 use Inphest\Internal\Console\Io\OutputInterface;
-use Inphest\Internal\Printer\PrettyPrinter;
-use Inphest\Internal\Printer\SimplePrinter;
+use Inphest\Internal\Printer\PrinterFactory;
 use Inphest\Internal\Stopwatch;
 use Inphest\Internal\TestRegistry;
 use Inphest\Internal\TestRunner;
@@ -72,12 +71,7 @@ final class RunCommand
             return self::FAILURE;
         }
 
-        // TODO load this from config
-        $usePrettyPrinter = !!1;
-
-        $printer = $usePrettyPrinter
-            ? new PrettyPrinter($output)
-            : new SimplePrinter($output);
+        $printer = PrinterFactory::create($input->getOption('format'), $output);
 
         $runner = new TestRunner($printer, new Assert());
         $result = $runner->run(new Stopwatch());

@@ -23,6 +23,6 @@ if (!class_exists(RunCommand::class)) {
 }
 
 $command = new RunCommand();
-$exitCode = $command->run(new Input($argv), new Output());
+$exitCode = $command->run(Input::from($argv), new Output());
 
 exit($exitCode);
