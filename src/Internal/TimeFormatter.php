@@ -14,16 +14,18 @@ final class TimeFormatter
 
         $string = '';
 
-        if ($minutes >= 1) {
-            $string .= sprintf('%dm ', $minutes);
+        if ($minutes > 0) {
+            $string .= "{$minutes}m ";
         }
 
-        if ($seconds >= 1) {
-            $string .= sprintf('%ds ', $seconds);
+        if ($seconds > 0) {
+            $string .= "{$seconds}s ";
         }
 
         if ($milliseconds > 0 || $string === '') {
-            $string .= sprintf('%dms', $milliseconds);
+            $microseconds = intdiv($nanoseconds, 1_000) % 1_000;
+
+            $string .= sprintf('%d.%03dms', $milliseconds, $microseconds);
         }
 
         return rtrim($string, ' ');
