@@ -9,63 +9,40 @@ use Inphest\Assert;
 use Inphest\Internal\Result\FailingTest;
 use Inphest\Internal\Result\PassingTest;
 use Inphest\Internal\Result\TestResultInterface;
-use Inphest\PublicTestCase;
 
-final class TestCase implements PublicTestCase
+final class TestCase
 {
     private string $label;
     private Closure $test;
 
     /**
-     * @var array<array-key, array<array-key, mixed>>
+     * @var array<array-key, mixed>
      */
-    private array $data = [];
+    private array $arguments = [];
 
     /**
      * @param string $label
      * @param Closure(Assert, mixed...): void $test
+     * @param array<array-key, mixed> $arguments
      */
-    public function __construct(string $label, Closure $test)
+    public function __construct(string $label, Closure $test, array $arguments)
     {
         $this->label = $label;
         $this->test = $test;
+        $this->arguments = $arguments;
     }
 
     /**
-     * @param array<array-key, array<array-key, mixed>> $data
-     * @return void
+     * @return TestResultInterface
      */
-    public function with(array $data): void
-    {
-        $this->data = $data;
-    }
-
-    /**
-     * @return iterable<TestResultInterface>
-     */
-    public function run(Assert $assert): iterable
-    {
-        if ($this->data === []) {
-            yield $this->runOne($assert, $this->label);
-
-            return;
-        }
-
-        foreach ($this->data as $index => $data) {
-            $label = "{$this->label} ({$index})";
-
-            yield $this->runOne($assert, $label, $data);
-        }
-    }
-
-    private function runOne(Assert $assert, string $label, array $arguments = []): TestResultInterface
+    public function run(Assert $assert): TestResultInterface
     {
         try {
-            ($this->test)($assert, ...$arguments);
+            ($this->test)($assert, ...$this->arguments);
 
-            return new PassingTest($label);
+            return new PassingTest($this->label);
         } catch (AssertionException $failureReason) {
-            return new FailingTest($label, $failureReason);
+            return new FailingTest($this->label, $failureReason);
         }
     }
 }

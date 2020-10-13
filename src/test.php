@@ -10,10 +10,11 @@ use Inphest\Internal\TestRegistry;
 /**
  * @param string $label
  * @param Closure(Assert, mixed...): void $test
+ * @param array<array-key, array<array-key, mixed>> $data
  *
- * @return PublicTestCase
+ * @return void
  */
-function test(string $label, Closure $test): PublicTestCase
+function test(string $label, Closure $test, array $data = []): void
 {
-    return TestRegistry::register($label, $test);
+    TestRegistry::register($label, $test, $data);
 }

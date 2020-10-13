@@ -6,7 +6,6 @@ namespace Inphest\Internal;
 
 use Closure;
 use Inphest\Assert;
-use Inphest\PublicTestCase;
 
 final class TestRegistry
 {
@@ -19,19 +18,28 @@ final class TestRegistry
     /**
      * @param string $label
      * @param Closure(Assert, mixed...): void $test
-     * @return PublicTestCase
+     * @param array<array-key, array<array-key, mixed>> $data
+     * @return void
      */
-    public static function register(string $label, Closure $test): PublicTestCase
+    public static function register(string $label, Closure $test, array $data): void
     {
         if (!isset(self::$tests[self::$file])) {
             self::$tests[self::$file] = [];
         }
 
-        $testCase = new TestCase($label, $test);
+        if ($data === []) {
+            self::$tests[self::$file][] = new TestCase($label, $test, []);
 
-        self::$tests[self::$file][] = $testCase;
+            return;
+        }
 
-        return $testCase;
+        foreach ($data as $index => $arguments) {
+            self::$tests[self::$file][] = new TestCase(
+                "{$label} ({$index})",
+                $test,
+                $arguments
+            );
+        }
     }
 
     /**

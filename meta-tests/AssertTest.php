@@ -25,8 +25,9 @@ test(
      */
     static function (Assert $assert, $expected, $actual): void {
         $assert->same($expected, $actual);
-    }
-)->with($sameData);
+    },
+    $sameData
+);
 
 test(
     'invoke works correctly',
@@ -36,8 +37,9 @@ test(
      */
     static function (Assert $assert, $expected, $actual): void {
         $assert($expected === $actual);
-    }
-)->with($sameData);
+    },
+    $sameData
+);
 
 test('throws (with exception)', static function (Assert $assert): void {
     $assert->throws(static function (): void {
