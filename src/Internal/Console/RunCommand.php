@@ -9,7 +9,6 @@ use Inphest\Assert;
 use Inphest\Internal\Console\Io\InputInterface;
 use Inphest\Internal\Console\Io\OutputInterface;
 use Inphest\Internal\Printer\PrinterFactory;
-use Inphest\Internal\Stopwatch;
 use Inphest\Internal\TestRegistry;
 use Inphest\Internal\TestRunner;
 use InvalidArgumentException;
@@ -74,7 +73,7 @@ final class RunCommand
         $printer = PrinterFactory::create($input->getOption('format'), $output);
 
         $runner = new TestRunner($printer, new Assert());
-        $result = $runner->run(new Stopwatch(), TestRegistry::iterate());
+        $result = $runner->run(TestRegistry::iterate());
 
         $printer->summary($result);
 

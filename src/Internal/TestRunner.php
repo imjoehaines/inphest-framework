@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Inphest\Internal;
 
-use Closure;
 use Inphest\Assert;
 use Inphest\Internal\Printer\PrinterInterface;
-use Inphest\Internal\Result\TestResultInterface;
 use Inphest\Internal\Result\TestSuiteResult;
 
 final class TestRunner
@@ -22,32 +20,33 @@ final class TestRunner
     }
 
     /**
-     * @param Stopwatch $stopwatch
      * @param iterable<string, list<TestCase>> $testRegistry
      * @return TestSuiteResult
      */
-    public function run(Stopwatch $stopwatch, iterable $testRegistry): TestSuiteResult
+    public function run(iterable $testRegistry): TestSuiteResult
     {
-        /**
-         * @param Closure(TestResultInterface): void $addResult
-        */
-        $runTests = function (Closure $addResult) use ($testRegistry): void {
-            foreach ($testRegistry as $file => $tests) {
-                $this->printer->heading($file);
+        $results = [];
 
-                foreach ($tests as $test) {
-                    $result = $test->run($this->assert);
-                    $addResult($result);
+        $stopwatch = Stopwatch::start();
 
-                    if ($result->isFailure()) {
-                        $this->printer->failure($result);
-                    } else {
-                        $this->printer->success($result);
-                    }
+        foreach ($testRegistry as $file => $tests) {
+            $this->printer->heading($file);
+
+            foreach ($tests as $test) {
+                $result = $test->run($this->assert);
+
+                if ($result->isFailure()) {
+                    $this->printer->failure($result);
+                } else {
+                    $this->printer->success($result);
                 }
-            }
-        };
 
-        return TestSuiteResult::create($stopwatch, $runTests);
+                $results[] = $result;
+            }
+        }
+
+        $timeTaken = $stopwatch->lap();
+
+        return new TestSuiteResult($results, $timeTaken);
     }
 }

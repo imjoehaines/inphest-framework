@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Inphest\Internal\Result;
 
-use Closure;
-use Inphest\Internal\Stopwatch;
-
 final class TestSuiteResult
 {
     /**
@@ -21,35 +18,21 @@ final class TestSuiteResult
 
     private int $timeTaken = 0;
 
-    private function __construct()
-    {
-    }
-
     /**
-     * @param Stopwatch $stopwatch
-     * @param Closure(Closure(TestResultInterface): void): void $runTests
-     *
-     * @return TestSuiteResult
+     * @param list<TestResultInterface> $results
+     * @param int $timeTaken
      */
-    public static function create(Stopwatch $stopwatch, Closure $runTests): TestSuiteResult
+    public function __construct(array $results, int $timeTaken)
     {
-        $suiteResult = new TestSuiteResult();
-
-        $addResult = static function (TestResultInterface $testResult) use ($suiteResult): void {
-            if ($testResult->isFailure()) {
-                $suiteResult->failures[] = $testResult;
+        foreach ($results as $result) {
+            if ($result->isFailure()) {
+                $this->failures[] = $result;
             } else {
-                $suiteResult->successes[] = $testResult;
+                $this->successes[] = $result;
             }
-        };
+        }
 
-        $suiteResult->timeTaken = $stopwatch->measure(
-            static function () use ($runTests, $addResult): void {
-                $runTests($addResult);
-            }
-        );
-
-        return $suiteResult;
+        $this->timeTaken = $timeTaken;
     }
 
     public function getTimeTaken(): int

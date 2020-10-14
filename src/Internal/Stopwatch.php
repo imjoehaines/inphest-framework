@@ -4,18 +4,22 @@ declare(strict_types=1);
 
 namespace Inphest\Internal;
 
-use Closure;
-
 final class Stopwatch
 {
-    public function measure(Closure $callback): int
+    private int $start;
+
+    private function __construct(int $start)
     {
-        $start = hrtime(true);
+        $this->start = $start;
+    }
 
-        $callback();
+    public static function start(): Stopwatch
+    {
+        return new Stopwatch(hrtime(true));
+    }
 
-        $end = hrtime(true);
-
-        return $end - $start;
+    public function lap(): int
+    {
+        return hrtime(true) - $this->start;
     }
 }
