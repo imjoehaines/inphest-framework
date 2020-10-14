@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Inphest\Internal\Printer;
 
 use Inphest\Internal\Console\Io\OutputInterface;
-use Inphest\Internal\Result\FailingTest;
+use Inphest\Internal\Result\FailingTestResultInterface;
 use Inphest\Internal\Result\TestResultInterface;
 use Inphest\Internal\Result\TestSuiteResult;
 use Inphest\Internal\TimeFormatter;
@@ -34,7 +34,7 @@ final class PrettyPrinter implements PrinterInterface
         $this->output->writeln("  {$tick} {$name}");
     }
 
-    public function failure(FailingTest $result): void
+    public function failure(FailingTestResultInterface $result): void
     {
         $cross = $this->output->red('✘');
         $name = $this->output->bold($result->getLabel());

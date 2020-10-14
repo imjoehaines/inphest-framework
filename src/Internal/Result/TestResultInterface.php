@@ -9,7 +9,7 @@ interface TestResultInterface
     public function getLabel(): string;
 
     /**
-     * @psalm-assert-if-true FailingTest $this
+     * @psalm-assert-if-true FailingTestResultInterface $this
      */
     public function isFailure(): bool;
 }

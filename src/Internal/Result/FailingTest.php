@@ -6,7 +6,7 @@ namespace Inphest\Internal\Result;
 
 use Throwable;
 
-final class FailingTest implements TestResultInterface
+final class FailingTest implements FailingTestResultInterface
 {
     private string $label;
     private Throwable $failureReason;

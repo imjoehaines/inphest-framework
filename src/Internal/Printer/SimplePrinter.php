@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Inphest\Internal\Printer;
 
 use Inphest\Internal\Console\Io\OutputInterface;
-use Inphest\Internal\Result\FailingTest;
+use Inphest\Internal\Result\FailingTestResultInterface;
 use Inphest\Internal\Result\TestResultInterface;
 use Inphest\Internal\Result\TestSuiteResult;
 use Inphest\Internal\TimeFormatter;
@@ -28,7 +28,7 @@ final class SimplePrinter implements PrinterInterface
         $this->output->write($this->output->green('✔'));
     }
 
-    public function failure(FailingTest $result): void
+    public function failure(FailingTestResultInterface $result): void
     {
         $this->output->write($this->output->red('✘'));
     }
@@ -43,7 +43,7 @@ final class SimplePrinter implements PrinterInterface
 
             $this->output->writeln("\n{$numberOfFailures} failures:");
 
-            /** @var FailingTest $failure */
+            /** @var FailingTestResultInterface $failure */
             foreach ($failures as $failure) {
                 $this->output->writeln(
                     "  {$failure->getLabel()} — {$failure->getFailureReason()->getMessage()}"
