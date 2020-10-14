@@ -74,7 +74,7 @@ final class RunCommand
         $printer = PrinterFactory::create($input->getOption('format'), $output);
 
         $runner = new TestRunner($printer, new Assert());
-        $result = $runner->run(new Stopwatch());
+        $result = $runner->run(new Stopwatch(), TestRegistry::iterate());
 
         $printer->summary($result);
 

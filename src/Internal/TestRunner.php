@@ -21,13 +21,18 @@ final class TestRunner
         $this->assert = $assert;
     }
 
-    public function run(Stopwatch $stopwatch): TestSuiteResult
+    /**
+     * @param Stopwatch $stopwatch
+     * @param iterable<string, list<TestCase>> $testRegistry
+     * @return TestSuiteResult
+     */
+    public function run(Stopwatch $stopwatch, iterable $testRegistry): TestSuiteResult
     {
         /**
          * @param Closure(TestResultInterface): void $addResult
         */
-        $runTests = function (Closure $addResult): void {
-            foreach (TestRegistry::iterate() as $file => $tests) {
+        $runTests = function (Closure $addResult) use ($testRegistry): void {
+            foreach ($testRegistry as $file => $tests) {
                 $this->printer->heading($file);
 
                 foreach ($tests as $test) {
