@@ -23,7 +23,7 @@ jobs:
       id: composer-cache
       run: echo "::set-output name=path::$(composer config cache-files-dir)"
 
-    - uses: actions/cache@v2
+    - uses: actions/cache@v2.1.5
       with:
         path: ${{ steps.composer-cache.outputs.path }}
         key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
